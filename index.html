@@ -26,7 +26,8 @@
   header .meta { font-size: 22px; color: var(--dim); }
 
   /* Tab bar */
-  .tabs { display: flex; gap: 8px; padding: 14px 18px; overflow-x: auto; border-bottom: 1px solid var(--line); background: #0d0f14; scrollbar-width: thin; }
+  .tabs { display: flex; gap: 8px; padding: 14px 18px; overflow-x: auto; border-bottom: 1px solid var(--line); background: #0d0f14; scrollbar-width: thin; align-items: center; }
+  .tabs-meta { margin-left: auto; padding-left: 16px; color: var(--dim); font-size: 18px; white-space: nowrap; }
   .tabs button { background: transparent; border: 2px solid var(--line); color: var(--dim); padding: 14px 22px; font: inherit; font-size: 22px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border-radius: 6px; white-space: nowrap; transition: color 0.12s, border-color 0.12s, background 0.12s; }
   .tabs button:hover { color: var(--fg); border-color: var(--dim); }
   .tabs button.active { color: var(--bg); background: var(--accent); border-color: var(--accent); font-weight: 600; }
@@ -77,10 +78,6 @@
   <a href="https://gems.wick.pics">PUMP GEMS</a>
   <a href="https://greenwick.tiiny.site/#join" target="_blank" rel="noopener">Buy $WICK</a>
 </div>
-<header>
-  <div class="meta">23 tokens · 2026-05-09 16:38 UTC</div>
-</header>
-
 <nav class="tabs" id="tabs">
 <button data-tab="rh-cores" class="active">RH CORES</button>
 <button data-tab="pump-tires" class="">PUMP TIRES</button>
@@ -91,6 +88,7 @@
 <button data-tab="the-greys" class="">THE GREYS</button>
 <button data-tab="poke-center" class="">POKE CENTER</button>
 <button data-tab="internet-money" class="">Internet Money</button>
+<div class="tabs-meta">23 tokens · 2026-05-09 16:39 UTC</div>
 </nav>
 
 <main>
