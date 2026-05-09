@@ -73,7 +73,7 @@
 </div>
 <header>
   <h1>PulseChain · <b>Metas</b></h1>
-  <div class="meta">27 tokens · 2026-05-09 14:46 UTC</div>
+  <div class="meta">27 tokens · 2026-05-09 14:47 UTC</div>
 </header>
 
 <nav class="tabs" id="tabs">
@@ -143,10 +143,16 @@
     if (s == null) return NaN;
     const t = String(s).trim();
     if (!t || t === '—' || t === 'N/A' || t === '#VALUE!') return NaN;
-    // Strip leading $, trailing %, commas, spaces.
+    // Strip $, commas, spaces, % — keep digits, decimal point, leading minus,
+    // and any K/M/B/T/Q magnitude suffix.
     const stripped = t.replace(/[$,\s%]/g, '');
-    const n = parseFloat(stripped);
-    return Number.isFinite(n) ? n : NaN;
+    const m = stripped.match(/^(-?\d+(?:\.\d+)?)([KMBTQ])?$/i);
+    if (!m) return NaN;
+    const n = parseFloat(m[1]);
+    if (!Number.isFinite(n)) return NaN;
+    const suffix = (m[2] || '').toUpperCase();
+    const factor = { K: 1e3, M: 1e6, B: 1e9, T: 1e12, Q: 1e15 }[suffix] || 1;
+    return n * factor;
   }
   function sortTable(table, colIdx) {
     const tbody = table.querySelector('tbody');
