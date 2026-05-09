@@ -73,7 +73,7 @@
 </div>
 <header>
   <h1>PulseChain · <b>Metas</b></h1>
-  <div class="meta">27 tokens · 2026-05-09 14:42 UTC</div>
+  <div class="meta">27 tokens · 2026-05-09 14:46 UTC</div>
 </header>
 
 <nav class="tabs" id="tabs">
@@ -155,9 +155,16 @@
     const prevCol = parseInt(table.dataset.sortCol);
     const prevDir = table.dataset.sortDir;
     const dir = (prevCol === colIdx && prevDir === 'asc') ? 'desc' : 'asc';
-    // Decide numeric vs text by sampling the first non-empty cell.
-    const sample = rows.map(r => r.children[colIdx] ? r.children[colIdx].textContent.trim() : '').find(Boolean) || '';
-    const numeric = !Number.isNaN(parseNum(sample));
+    // Decide numeric vs text by majority vote across ALL non-empty cells.
+    // (A single "—" first cell used to flip the whole column to text sort.)
+    const samples = rows
+      .map(r => r.children[colIdx] ? r.children[colIdx].textContent.trim() : '')
+      .filter(Boolean);
+    let numC = 0, txtC = 0;
+    for (const s of samples) {
+      if (Number.isNaN(parseNum(s))) txtC++; else numC++;
+    }
+    const numeric = numC > 0 && numC >= txtC;
     rows.sort((a, b) => {
       const av = a.children[colIdx] ? a.children[colIdx].textContent.trim() : '';
       const bv = b.children[colIdx] ? b.children[colIdx].textContent.trim() : '';
