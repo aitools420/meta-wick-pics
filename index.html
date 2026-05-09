@@ -23,18 +23,18 @@
   body[data-active="dexs-aggs"]     { --accent: #22d3ee; --bg: #061318; }  /* cyan   */
   * { box-sizing: border-box; }
   body { margin:0; font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace; background:var(--bg); color:var(--fg); }
-  .ribbon { padding: 14px 16px; background: linear-gradient(90deg, #0d9488, #065f46); text-align: center; font-size: 22px; }
+  .ribbon { padding: 14px 16px; background: linear-gradient(90deg, #0d9488, #065f46); text-align: center; font-size: 15px; }
   .ribbon a { color: #d1fae5; text-decoration: none; margin: 0 12px; }
   .ribbon a:hover { color: #fff; }
   header { padding: 20px 28px; border-bottom: 1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; }
-  header h1 { font-size: 28px; margin: 0; font-weight: 500; letter-spacing: 0.04em; color: var(--dim); }
+  header h1 { font-size: 20px; margin: 0; font-weight: 500; letter-spacing: 0.04em; color: var(--dim); }
   header h1 b { color: var(--fg); font-weight: 600; }
-  header .meta { font-size: 22px; color: var(--dim); }
+  header .meta { font-size: 15px; color: var(--dim); }
 
   /* Tab bar */
   .tabs { display: flex; gap: 8px; padding: 14px 18px; overflow-x: auto; border-bottom: 1px solid var(--line); background: #0d0f14; scrollbar-width: thin; align-items: center; }
-  .tabs-meta { margin-left: auto; padding-left: 16px; color: var(--dim); font-size: 18px; white-space: nowrap; }
-  .tabs button { background: transparent; border: 2px solid var(--line); color: var(--dim); padding: 14px 22px; font: inherit; font-size: 22px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border-radius: 6px; white-space: nowrap; transition: color 0.12s, border-color 0.12s, background 0.12s; }
+  .tabs-meta { margin-left: auto; padding-left: 16px; color: var(--dim); font-size: 13px; white-space: nowrap; }
+  .tabs button { background: transparent; border: 2px solid var(--line); color: var(--dim); padding: 14px 22px; font: inherit; font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border-radius: 6px; white-space: nowrap; transition: color 0.12s, border-color 0.12s, background 0.12s; }
   .tabs button:hover { color: var(--fg); border-color: var(--dim); }
   .tabs button.active { color: var(--bg); background: var(--accent); border-color: var(--accent); font-weight: 600; }
   /* Preserve the lowercase 'p' in pCOPIES — global text-transform: uppercase
@@ -45,16 +45,16 @@
   main { padding: 24px 28px 48px; }
   .panel { display: none; }
   .panel.active { display: block; }
-  .panel h2 { font-size: 32px; font-weight: 600; letter-spacing: 0.06em; margin: 8px 0 22px; color: var(--fg); }
-  .panel h2 .count { color: var(--dim); font-weight: 400; font-size: 22px; }
-  .subtable-title { font-size: 22px; font-weight: 600; letter-spacing: 0.06em; margin: 8px 0 12px; color: var(--accent); text-transform: uppercase; }
-  .subtable-title .count { color: var(--dim); font-weight: 400; font-size: 18px; }
+  .panel h2 { font-size: 22px; font-weight: 600; letter-spacing: 0.06em; margin: 8px 0 22px; color: var(--fg); }
+  .panel h2 .count { color: var(--dim); font-weight: 400; font-size: 15px; }
+  .subtable-title { font-size: 15px; font-weight: 600; letter-spacing: 0.06em; margin: 8px 0 12px; color: var(--accent); text-transform: uppercase; }
+  .subtable-title .count { color: var(--dim); font-weight: 400; font-size: 13px; }
 
   /* Table */
   .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
-  table { width: 100%; border-collapse: collapse; font-size: 22px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
   th, td { padding: 16px 18px; text-align: center; border-bottom: 1px solid var(--line); white-space: nowrap; }
-  th { background: var(--row); color: var(--dim); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 20px; cursor: pointer; user-select: none; position: sticky; top: 0;
+  th { background: var(--row); color: var(--dim); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 14px; cursor: pointer; user-select: none; position: sticky; top: 0;
         /* Two-line column titles: allow wrapping + reserve a fixed 2-line
            height so short titles vertical-center next to wrapped ones. */
         white-space: normal; line-height: 1.2; vertical-align: middle;
@@ -72,14 +72,14 @@
   td.c-mcap, td.c-supply, td.c-liq, td.c-liq-mcap-pct, td.c-shark-cost-usd, td.c-shark-tokens, td.c-token-burn-pct, td.c-top5-pct, td.c-slip-pct { font-variant-numeric: tabular-nums; }
   td.c-shark-cost-usd { color: #22c55e; font-weight: 600; }
   td.c-lp-burn, td.c-token-burn-pct { color: #fb923c; font-weight: 600; }
-  td.c-ca a { color: var(--accent); text-decoration: none; font-size: 20px; }
+  td.c-ca a { color: var(--accent); text-decoration: none; font-size: 14px; }
   td.c-ca a:hover { text-decoration: underline; }
-  .buy-btn { display: inline-block; padding: 8px 20px; background: var(--accent); color: var(--bg); border-radius: 4px; font-size: 20px; font-weight: 700; text-decoration: none; letter-spacing: 0.06em; }
+  .buy-btn { display: inline-block; padding: 8px 20px; background: var(--accent); color: var(--bg); border-radius: 4px; font-size: 14px; font-weight: 700; text-decoration: none; letter-spacing: 0.06em; }
   .buy-btn:hover { background: var(--good); }
-  .empty-row { text-align: center; color: var(--dim); padding: 56px; font-style: italic; font-size: 22px; }
+  .empty-row { text-align: center; color: var(--dim); padding: 56px; font-style: italic; font-size: 15px; }
   td.c-founder { color: var(--warm); }
 
-  footer { padding: 24px 28px; color: var(--dim); font-size: 20px; border-top: 1px solid var(--line); text-align: center; }
+  footer { padding: 24px 28px; color: var(--dim); font-size: 14px; border-top: 1px solid var(--line); text-align: center; }
   footer code { color: var(--accent); }
 </style>
 </head>
@@ -99,7 +99,7 @@
 <button data-tab="poke-center" class="">POKE CENTER</button>
 <button data-tab="internet-money" class="">OTHER GREAT COMMUNITIES</button>
 <button data-tab="dexs-aggs" class="">DEXS &amp; AGGS</button>
-<div class="tabs-meta">105 tokens · 2026-05-09 18:56 UTC</div>
+<div class="tabs-meta">105 tokens · 2026-05-09 18:58 UTC</div>
 </nav>
 
 <main>
