@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🦈%3C/text%3E%3C/svg%3E"/>
+<title>PulseChain Metas</title>
+<style>
+  :root { color-scheme: dark; --bg:#0a0b0e; --fg:#e5e7eb; --dim:#8e909c; --accent:#7dd3fc; --row:#11141a; --line:#1f2330; --warm:#fbbf24; --good:#6ee7b7; --bad:#f87171; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace; background:var(--bg); color:var(--fg); }
+  .ribbon { padding: 10px 12px; background: linear-gradient(90deg, #0d9488, #065f46); text-align: center; font-size: 11px; }
+  .ribbon a { color: #d1fae5; text-decoration: none; margin: 0 8px; }
+  .ribbon a:hover { color: #fff; }
+  header { padding: 14px 20px; border-bottom: 1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+  header h1 { font-size: 14px; margin: 0; font-weight: 500; letter-spacing: 0.04em; color: var(--dim); }
+  header h1 b { color: var(--fg); font-weight: 600; }
+  header .meta { font-size: 11px; color: var(--dim); }
+
+  /* Tab bar */
+  .tabs { display: flex; gap: 4px; padding: 8px 12px; overflow-x: auto; border-bottom: 1px solid var(--line); background: #0d0f14; scrollbar-width: thin; }
+  .tabs button { background: transparent; border: 1px solid var(--line); color: var(--dim); padding: 8px 14px; font: inherit; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border-radius: 4px; white-space: nowrap; transition: color 0.12s, border-color 0.12s, background 0.12s; }
+  .tabs button:hover { color: var(--fg); border-color: var(--dim); }
+  .tabs button.active { color: var(--bg); background: var(--accent); border-color: var(--accent); font-weight: 600; }
+
+  /* Panels */
+  main { padding: 18px 20px 32px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .panel h2 { font-size: 16px; font-weight: 600; letter-spacing: 0.06em; margin: 4px 0 14px; color: var(--fg); }
+  .panel h2 .count { color: var(--dim); font-weight: 400; font-size: 11px; }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; }
+  table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { background: var(--row); color: var(--dim); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 10px; }
+  tbody tr:hover td { background: var(--row); }
+  td.c-token a { color: var(--fg); font-weight: 600; text-decoration: none; }
+  td.c-token a:hover { color: var(--accent); }
+  td.c-mcap, td.c-supply, td.c-lp-9mm-v3-wpls, td.c-shark-cost-usd, td.c-shark-tokens, td.c-token-burn-pct, td.c-top5-pct, td.c-slip-pct { font-variant-numeric: tabular-nums; text-align: right; }
+  td.c-lp-burn { text-align: center; color: var(--good); font-weight: 600; }
+  td.c-ca a { color: var(--accent); text-decoration: none; font-size: 10px; }
+  td.c-ca a:hover { text-decoration: underline; }
+  td.c-buy { text-align: center; }
+  .buy-btn { display: inline-block; padding: 4px 12px; background: var(--accent); color: var(--bg); border-radius: 3px; font-size: 10px; font-weight: 700; text-decoration: none; letter-spacing: 0.06em; }
+  .buy-btn:hover { background: var(--good); }
+  .empty-row { text-align: center; color: var(--dim); padding: 28px; font-style: italic; font-size: 11px; }
+  td.c-founder { color: var(--warm); }
+
+  footer { padding: 16px 20px; color: var(--dim); font-size: 10px; border-top: 1px solid var(--line); text-align: center; }
+  footer code { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="ribbon">
+  <a href="https://wick.pics">← WICK Hub</a>
+  <a href="https://gems.wick.pics">PUMP GEMS</a>
+  <a href="https://greenwick.tiiny.site/#join" target="_blank" rel="noopener">Buy $WICK</a>
+</div>
+<header>
+  <h1>PulseChain · <b>Metas</b></h1>
+  <div class="meta">2 tokens · 2026-05-09 14:03 UTC</div>
+</header>
+
+<nav class="tabs" id="tabs">
+<button data-tab="tang-gang" class="active">TANG GANG</button>
+<button data-tab="hoa" class="">HOA</button>
+<button data-tab="atropa" class="">ATROPA</button>
+<button data-tab="dwb" class="">DWB</button>
+<button data-tab="hex" class="">HEX</button>
+<button data-tab="pls" class="">PLS</button>
+<button data-tab="plsx" class="">PLSX</button>
+<button data-tab="inc" class="">INC</button>
+<button data-tab="wick" class="">WICK</button>
+</nav>
+
+<main>
+<section class="panel active" data-panel="tang-gang"><h2>TANG GANG <span class="count">· 1 tokens</span></h2><div class="table-wrap"><table><thead><tr><th>TOKEN</th><th>FOUNDER</th><th>MARKET CAP</th><th>SUPPLY</th><th>9mm V3 WPLS LP</th><th>COST OF SHARK ($)</th><th>TOKENS TO BE A SHARK</th><th>LP BURN</th><th>TOKEN BURN (%)</th><th>HOLDERS TOP 5 (%)</th><th>% SLIP (SHARK)</th><th>BUY</th><th>CA</th></tr></thead><tbody><tr><td class="c-token"><a href="https://dexscreener.com/pulsechain/0x4eF90d0a9b107DFf6E916102C4DaF3d0A564b577" target="_blank" rel="noopener noreferrer">KUMAMON</a></td><td class="c-founder">Tang Gang</td><td class="c-mcap">$3,637,573,413</td><td class="c-supply">20,000,000,020</td><td class="c-lp-9mm-v3-wpls">$8,448</td><td class="c-shark-cost-usd">$48</td><td class="c-shark-tokens">265</td><td class="c-lp-burn">YES</td><td class="c-token-burn-pct">99.9987%</td><td class="c-top5-pct">0%</td><td class="c-slip-pct">0.57%</td><td class="c-buy"><a class="buy-btn" href="https://dex.9mm.pro/?inputCurrency=PLS&amp;outputCurrency=0x4eF90d0a9b107DFf6E916102C4DaF3d0A564b577" target="_blank" rel="noopener noreferrer">BUY</a></td><td class="c-ca"><a href="https://dexscreener.com/pulsechain/0x4eF90d0a9b107DFf6E916102C4DaF3d0A564b577" target="_blank" rel="noopener noreferrer" title="0x4eF90d0a9b107DFf6E916102C4DaF3d0A564b577">0x4eF9…b577</a></td></tr></tbody></table></div></section>
+<section class="panel" data-panel="hoa"><h2>HOA <span class="count">· 1 tokens</span></h2><div class="table-wrap"><table><thead><tr><th>TOKEN</th><th>FOUNDER</th><th>MARKET CAP</th><th>SUPPLY</th><th>9mm V3 WPLS LP</th><th>COST OF SHARK ($)</th><th>TOKENS TO BE A SHARK</th><th>LP BURN</th><th>TOKEN BURN (%)</th><th>HOLDERS TOP 5 (%)</th><th>% SLIP (SHARK)</th><th>BUY</th><th>CA</th></tr></thead><tbody><tr><td class="c-token"><a href="https://dexscreener.com/pulsechain/0x7901a3569679AEc3501dbeC59399F327854a70fe" target="_blank" rel="noopener noreferrer">HOA</a></td><td class="c-founder">Spooky</td><td class="c-mcap">N/A</td><td class="c-supply">151,811,475</td><td class="c-lp-9mm-v3-wpls">N/A</td><td class="c-shark-cost-usd">—</td><td class="c-shark-tokens">150,096</td><td class="c-lp-burn">YES</td><td class="c-token-burn-pct">1%</td><td class="c-top5-pct">48%</td><td class="c-slip-pct">—</td><td class="c-buy"><a class="buy-btn" href="https://dex.9mm.pro/?inputCurrency=PLS&amp;outputCurrency=0x7901a3569679AEc3501dbeC59399F327854a70fe" target="_blank" rel="noopener noreferrer">BUY</a></td><td class="c-ca"><a href="https://dexscreener.com/pulsechain/0x7901a3569679AEc3501dbeC59399F327854a70fe" target="_blank" rel="noopener noreferrer" title="0x7901a3569679AEc3501dbeC59399F327854a70fe">0x7901…70fe</a></td></tr></tbody></table></div></section>
+<section class="panel" data-panel="atropa"><h2>ATROPA <span class="count">· 0 tokens</span></h2><div class="table-wrap"><table><thead><tr><th>TOKEN</th><th>FOUNDER</th><th>MARKET CAP</th><th>SUPPLY</th><th>9mm V3 WPLS LP</th><th>COST OF SHARK ($)</th><th>TOKENS TO BE A SHARK</th><th>LP BURN</th><th>TOKEN BURN (%)</th><th>HOLDERS TOP 5 (%)</th><th>% SLIP (SHARK)</th><th>BUY</th><th>CA</th></tr></thead><tbody><tr><td colspan="13" class="empty-row">no tokens added yet — edit data.json + rebuild</td></tr></tbody></table></div></section>
+<section class="panel" data-panel="dwb"><h2>DWB <span class="count">· 0 tokens</span></h2><div class="table-wrap"><table><thead><tr><th>TOKEN</th><th>FOUNDER</th><th>MARKET CAP</th><th>SUPPLY</th><th>9mm V3 WPLS LP</th><th>COST OF SHARK ($)</th><th>TOKENS TO BE A SHARK</th><th>LP BURN</th><th>TOKEN BURN (%)</th><th>HOLDERS TOP 5 (%)</th><th>% SLIP (SHARK)</th><th>BUY</th><th>CA</th></tr></thead><tbody><tr><td colspan="13" class="empty-row">no tokens added yet — edit data.json + rebuild</td></tr></tbody></table></div></section>
+<section class="panel" data-panel="hex"><h2>HEX <span class="count">· 0 tokens</span></h2><div class="table-wrap"><table><thead><tr><th>TOKEN</th><th>FOUNDER</th><th>MARKET CAP</th><th>SUPPLY</th><th>9mm V3 WPLS LP</th><th>COST OF SHARK ($)</th><th>TOKENS TO BE A SHARK</th><th>LP BURN</th><th>TOKEN BURN (%)</th><th>HOLDERS TOP 5 (%)</th><th>% SLIP (SHARK)</th><th>BUY</th><th>CA</th></tr></thead><tbody><tr><td colspan="13" class="empty-row">no tokens added yet — edit data.json + rebuild</td></tr></tbody></table></div></section>
+<section class="panel" data-panel="pls"><h2>PLS <span class="count">· 0 tokens</span></h2><div class="table-wrap"><table><thead><tr><th>TOKEN</th><th>FOUNDER</th><th>MARKET CAP</th><th>SUPPLY</th><th>9mm V3 WPLS LP</th><th>COST OF SHARK ($)</th><th>TOKENS TO BE A SHARK</th><th>LP BURN</th><th>TOKEN BURN (%)</th><th>HOLDERS TOP 5 (%)</th><th>% SLIP (SHARK)</th><th>BUY</th><th>CA</th></tr></thead><tbody><tr><td colspan="13" class="empty-row">no tokens added yet — edit data.json + rebuild</td></tr></tbody></table></div></section>
+<section class="panel" data-panel="plsx"><h2>PLSX <span class="count">· 0 tokens</span></h2><div class="table-wrap"><table><thead><tr><th>TOKEN</th><th>FOUNDER</th><th>MARKET CAP</th><th>SUPPLY</th><th>9mm V3 WPLS LP</th><th>COST OF SHARK ($)</th><th>TOKENS TO BE A SHARK</th><th>LP BURN</th><th>TOKEN BURN (%)</th><th>HOLDERS TOP 5 (%)</th><th>% SLIP (SHARK)</th><th>BUY</th><th>CA</th></tr></thead><tbody><tr><td colspan="13" class="empty-row">no tokens added yet — edit data.json + rebuild</td></tr></tbody></table></div></section>
+<section class="panel" data-panel="inc"><h2>INC <span class="count">· 0 tokens</span></h2><div class="table-wrap"><table><thead><tr><th>TOKEN</th><th>FOUNDER</th><th>MARKET CAP</th><th>SUPPLY</th><th>9mm V3 WPLS LP</th><th>COST OF SHARK ($)</th><th>TOKENS TO BE A SHARK</th><th>LP BURN</th><th>TOKEN BURN (%)</th><th>HOLDERS TOP 5 (%)</th><th>% SLIP (SHARK)</th><th>BUY</th><th>CA</th></tr></thead><tbody><tr><td colspan="13" class="empty-row">no tokens added yet — edit data.json + rebuild</td></tr></tbody></table></div></section>
+<section class="panel" data-panel="wick"><h2>WICK <span class="count">· 0 tokens</span></h2><div class="table-wrap"><table><thead><tr><th>TOKEN</th><th>FOUNDER</th><th>MARKET CAP</th><th>SUPPLY</th><th>9mm V3 WPLS LP</th><th>COST OF SHARK ($)</th><th>TOKENS TO BE A SHARK</th><th>LP BURN</th><th>TOKEN BURN (%)</th><th>HOLDERS TOP 5 (%)</th><th>% SLIP (SHARK)</th><th>BUY</th><th>CA</th></tr></thead><tbody><tr><td colspan="13" class="empty-row">no tokens added yet — edit data.json + rebuild</td></tr></tbody></table></div></section>
+</main>
+
+<footer>
+  Edit <code>data.json</code> + run <code>python3 build.py</code> to update tabs and rows.
+</footer>
+
+<script>
+(function () {
+  const tabs = document.querySelectorAll('#tabs button');
+  const panels = document.querySelectorAll('.panel');
+  function activate(slug) {
+    for (const t of tabs) t.classList.toggle('active', t.dataset.tab === slug);
+    for (const p of panels) p.classList.toggle('active', p.dataset.panel === slug);
+    if (location.hash !== '#' + slug) history.replaceState(null, '', '#' + slug);
+  }
+  for (const t of tabs) t.addEventListener('click', () => activate(t.dataset.tab));
+  const init = (location.hash || '').replace('#', '');
+  const valid = Array.from(tabs).find(t => t.dataset.tab === init);
+  activate(valid ? init : tabs[0].dataset.tab);
+})();
+</script>
+</body>
+</html>
