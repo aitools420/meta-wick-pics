@@ -8,47 +8,54 @@
 <title>PulseChain Metas</title>
 <style>
   :root { color-scheme: dark; --bg:#0a0b0e; --fg:#e5e7eb; --dim:#8e909c; --accent:#7dd3fc; --row:#11141a; --line:#1f2330; --warm:#fbbf24; --good:#6ee7b7; --bad:#f87171; }
+  /* Per-meta accent: applied via body[data-active="<slug>"] (set by JS on tab switch). */
+  body[data-active="rh-cores"]    { --accent: #a855f7; --bg: #160a22; }  /* purple */
+  body[data-active="tang-gang"]   { --accent: #fb923c; }  /* orange */
+  body[data-active="pepe-meta"]   { --accent: #22c55e; }  /* green  */
+  body[data-active="woogee-gang"] { --accent: #22c55e; }  /* green  */
   * { box-sizing: border-box; }
   body { margin:0; font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace; background:var(--bg); color:var(--fg); }
-  .ribbon { padding: 10px 12px; background: linear-gradient(90deg, #0d9488, #065f46); text-align: center; font-size: 11px; }
-  .ribbon a { color: #d1fae5; text-decoration: none; margin: 0 8px; }
+  .ribbon { padding: 14px 16px; background: linear-gradient(90deg, #0d9488, #065f46); text-align: center; font-size: 22px; }
+  .ribbon a { color: #d1fae5; text-decoration: none; margin: 0 12px; }
   .ribbon a:hover { color: #fff; }
-  header { padding: 14px 20px; border-bottom: 1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
-  header h1 { font-size: 14px; margin: 0; font-weight: 500; letter-spacing: 0.04em; color: var(--dim); }
+  header { padding: 20px 28px; border-bottom: 1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; }
+  header h1 { font-size: 28px; margin: 0; font-weight: 500; letter-spacing: 0.04em; color: var(--dim); }
   header h1 b { color: var(--fg); font-weight: 600; }
-  header .meta { font-size: 11px; color: var(--dim); }
+  header .meta { font-size: 22px; color: var(--dim); }
 
   /* Tab bar */
-  .tabs { display: flex; gap: 4px; padding: 8px 12px; overflow-x: auto; border-bottom: 1px solid var(--line); background: #0d0f14; scrollbar-width: thin; }
-  .tabs button { background: transparent; border: 1px solid var(--line); color: var(--dim); padding: 8px 14px; font: inherit; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border-radius: 4px; white-space: nowrap; transition: color 0.12s, border-color 0.12s, background 0.12s; }
+  .tabs { display: flex; gap: 8px; padding: 14px 18px; overflow-x: auto; border-bottom: 1px solid var(--line); background: #0d0f14; scrollbar-width: thin; }
+  .tabs button { background: transparent; border: 2px solid var(--line); color: var(--dim); padding: 14px 22px; font: inherit; font-size: 22px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border-radius: 6px; white-space: nowrap; transition: color 0.12s, border-color 0.12s, background 0.12s; }
   .tabs button:hover { color: var(--fg); border-color: var(--dim); }
   .tabs button.active { color: var(--bg); background: var(--accent); border-color: var(--accent); font-weight: 600; }
 
   /* Panels */
-  main { padding: 18px 20px 32px; }
+  main { padding: 24px 28px 48px; }
   .panel { display: none; }
   .panel.active { display: block; }
-  .panel h2 { font-size: 16px; font-weight: 600; letter-spacing: 0.06em; margin: 4px 0 14px; color: var(--fg); }
-  .panel h2 .count { color: var(--dim); font-weight: 400; font-size: 11px; }
+  .panel h2 { font-size: 32px; font-weight: 600; letter-spacing: 0.06em; margin: 8px 0 22px; color: var(--fg); }
+  .panel h2 .count { color: var(--dim); font-weight: 400; font-size: 22px; }
 
   /* Table */
-  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; }
-  table { width: 100%; border-collapse: collapse; font-size: 11px; }
-  th, td { padding: 8px 10px; text-align: center; border-bottom: 1px solid var(--line); white-space: nowrap; }
-  th { background: var(--row); color: var(--dim); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 10px; }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 22px; }
+  th, td { padding: 16px 18px; text-align: center; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { background: var(--row); color: var(--dim); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 20px; cursor: pointer; user-select: none; position: sticky; top: 0; }
+  th:hover { color: var(--fg); }
+  th.sorted::after { content: attr(data-arrow); margin-left: 6px; color: var(--accent); }
   tbody tr:hover td { background: var(--row); }
   td.c-token a { color: var(--fg); font-weight: 600; text-decoration: none; }
   td.c-token a:hover { color: var(--accent); }
   td.c-mcap, td.c-supply, td.c-lp-9mm-v3-wpls, td.c-shark-cost-usd, td.c-shark-tokens, td.c-token-burn-pct, td.c-top5-pct, td.c-slip-pct { font-variant-numeric: tabular-nums; }
   td.c-lp-burn { color: var(--good); font-weight: 600; }
-  td.c-ca a { color: var(--accent); text-decoration: none; font-size: 10px; }
+  td.c-ca a { color: var(--accent); text-decoration: none; font-size: 20px; }
   td.c-ca a:hover { text-decoration: underline; }
-  .buy-btn { display: inline-block; padding: 4px 12px; background: var(--accent); color: var(--bg); border-radius: 3px; font-size: 10px; font-weight: 700; text-decoration: none; letter-spacing: 0.06em; }
+  .buy-btn { display: inline-block; padding: 8px 20px; background: var(--accent); color: var(--bg); border-radius: 4px; font-size: 20px; font-weight: 700; text-decoration: none; letter-spacing: 0.06em; }
   .buy-btn:hover { background: var(--good); }
-  .empty-row { text-align: center; color: var(--dim); padding: 28px; font-style: italic; font-size: 11px; }
+  .empty-row { text-align: center; color: var(--dim); padding: 56px; font-style: italic; font-size: 22px; }
   td.c-founder { color: var(--warm); }
 
-  footer { padding: 16px 20px; color: var(--dim); font-size: 10px; border-top: 1px solid var(--line); text-align: center; }
+  footer { padding: 24px 28px; color: var(--dim); font-size: 20px; border-top: 1px solid var(--line); text-align: center; }
   footer code { color: var(--accent); }
 </style>
 </head>
@@ -60,7 +67,7 @@
 </div>
 <header>
   <h1>PulseChain · <b>Metas</b></h1>
-  <div class="meta">2 tokens · 2026-05-09 14:09 UTC</div>
+  <div class="meta">2 tokens · 2026-05-09 14:13 UTC</div>
 </header>
 
 <nav class="tabs" id="tabs">
@@ -90,12 +97,66 @@
   function activate(slug) {
     for (const t of tabs) t.classList.toggle('active', t.dataset.tab === slug);
     for (const p of panels) p.classList.toggle('active', p.dataset.panel === slug);
+    document.body.dataset.active = slug;
     if (location.hash !== '#' + slug) history.replaceState(null, '', '#' + slug);
   }
   for (const t of tabs) t.addEventListener('click', () => activate(t.dataset.tab));
   const init = (location.hash || '').replace('#', '');
   const valid = Array.from(tabs).find(t => t.dataset.tab === init);
   activate(valid ? init : tabs[0].dataset.tab);
+
+  // Per-table column sort. Each table tracks its own sort col + direction in
+  // dataset attributes. Click toggles direction if same col, else asc.
+  function parseNum(s) {
+    if (s == null) return NaN;
+    const t = String(s).trim();
+    if (!t || t === '—' || t === 'N/A' || t === '#VALUE!') return NaN;
+    // Strip leading $, trailing %, commas, spaces.
+    const stripped = t.replace(/[$,\s%]/g, '');
+    const n = parseFloat(stripped);
+    return Number.isFinite(n) ? n : NaN;
+  }
+  function sortTable(table, colIdx) {
+    const tbody = table.querySelector('tbody');
+    const rows = Array.from(tbody.querySelectorAll('tr')).filter(r => !r.querySelector('.empty-row'));
+    if (!rows.length) return;
+    const prevCol = parseInt(table.dataset.sortCol);
+    const prevDir = table.dataset.sortDir;
+    const dir = (prevCol === colIdx && prevDir === 'asc') ? 'desc' : 'asc';
+    // Decide numeric vs text by sampling the first non-empty cell.
+    const sample = rows.map(r => r.children[colIdx] ? r.children[colIdx].textContent.trim() : '').find(Boolean) || '';
+    const numeric = !Number.isNaN(parseNum(sample));
+    rows.sort((a, b) => {
+      const av = a.children[colIdx] ? a.children[colIdx].textContent.trim() : '';
+      const bv = b.children[colIdx] ? b.children[colIdx].textContent.trim() : '';
+      let cmp;
+      if (numeric) {
+        const an = parseNum(av), bn = parseNum(bv);
+        // NaN values sort to bottom regardless of direction.
+        if (Number.isNaN(an) && Number.isNaN(bn)) cmp = 0;
+        else if (Number.isNaN(an)) cmp = 1;
+        else if (Number.isNaN(bn)) cmp = -1;
+        else cmp = an - bn;
+      } else {
+        cmp = av.localeCompare(bv, undefined, { numeric: true, sensitivity: 'base' });
+      }
+      return dir === 'asc' ? cmp : -cmp;
+    });
+    for (const r of rows) tbody.appendChild(r);
+    table.dataset.sortCol = String(colIdx);
+    table.dataset.sortDir = dir;
+    // Update header arrows.
+    table.querySelectorAll('th').forEach((th, i) => {
+      th.classList.toggle('sorted', i === colIdx);
+      if (i === colIdx) th.setAttribute('data-arrow', dir === 'asc' ? '▲' : '▼');
+      else th.removeAttribute('data-arrow');
+    });
+  }
+  document.querySelectorAll('table').forEach(table => {
+    table.querySelectorAll('th').forEach((th, idx) => {
+      th.addEventListener('click', () => sortTable(table, idx));
+    });
+  });
 })();
 </script>
 </body>
