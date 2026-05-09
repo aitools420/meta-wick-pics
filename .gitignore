@@ -3,5 +3,4 @@ build.py
 data.json
 fetch_logos.py
 *.log
-logos_manifest.json
 refresh_mcaps.py
