@@ -8,11 +8,13 @@
 <title>PulseChain Metas</title>
 <style>
   :root { color-scheme: dark; --bg:#0a0b0e; --fg:#e5e7eb; --dim:#8e909c; --accent:#7dd3fc; --row:#11141a; --line:#1f2330; --warm:#fbbf24; --good:#6ee7b7; --bad:#f87171; }
-  /* Per-meta accent: applied via body[data-active="<slug>"] (set by JS on tab switch). */
+  /* Per-meta accent + body background tint, applied via body[data-active="<slug>"]
+     (set by JS on tab switch). Each background is a heavily-darkened version of
+     the accent so the tab's identity is felt across the whole page. */
   body[data-active="rh-cores"]    { --accent: #a855f7; --bg: #160a22; }  /* purple */
-  body[data-active="tang-gang"]   { --accent: #fb923c; }  /* orange */
-  body[data-active="pepe-meta"]   { --accent: #22c55e; }  /* green  */
-  body[data-active="woogee-gang"] { --accent: #22c55e; }  /* green  */
+  body[data-active="tang-gang"]   { --accent: #fb923c; --bg: #1c0e02; }  /* orange */
+  body[data-active="pepe-meta"]   { --accent: #22c55e; --bg: #0a1c12; }  /* green  */
+  body[data-active="woogee-gang"] { --accent: #22c55e; --bg: #0a1c12; }  /* green  */
   * { box-sizing: border-box; }
   body { margin:0; font-family: ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace; background:var(--bg); color:var(--fg); }
   .ribbon { padding: 14px 16px; background: linear-gradient(90deg, #0d9488, #065f46); text-align: center; font-size: 22px; }
@@ -67,7 +69,7 @@
 </div>
 <header>
   <h1>PulseChain · <b>Metas</b></h1>
-  <div class="meta">1 tokens · 2026-05-09 14:15 UTC</div>
+  <div class="meta">1 tokens · 2026-05-09 14:16 UTC</div>
 </header>
 
 <nav class="tabs" id="tabs">
