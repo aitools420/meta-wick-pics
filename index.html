@@ -42,7 +42,11 @@
   .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
   table { width: 100%; border-collapse: collapse; font-size: 22px; }
   th, td { padding: 16px 18px; text-align: center; border-bottom: 1px solid var(--line); white-space: nowrap; }
-  th { background: var(--row); color: var(--dim); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 20px; cursor: pointer; user-select: none; position: sticky; top: 0; }
+  th { background: var(--row); color: var(--dim); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; font-size: 20px; cursor: pointer; user-select: none; position: sticky; top: 0;
+        /* Two-line column titles: allow wrapping + reserve a fixed 2-line
+           height so short titles vertical-center next to wrapped ones. */
+        white-space: normal; line-height: 1.2; vertical-align: middle;
+        max-width: 140px; height: 3.2em; }
   th:hover { color: var(--fg); }
   th.sorted::after { content: attr(data-arrow); margin-left: 6px; color: var(--accent); }
   tbody tr:hover td { background: var(--row); }
@@ -69,7 +73,7 @@
 </div>
 <header>
   <h1>PulseChain · <b>Metas</b></h1>
-  <div class="meta">27 tokens · 2026-05-09 14:25 UTC</div>
+  <div class="meta">27 tokens · 2026-05-09 14:27 UTC</div>
 </header>
 
 <nav class="tabs" id="tabs">
