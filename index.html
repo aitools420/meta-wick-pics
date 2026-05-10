@@ -77,6 +77,12 @@
   td.c-lp-burn, td.c-token-burn-pct { color: #fb923c; font-weight: 600; }
   td.c-ca a { color: var(--accent); text-decoration: none; font-size: 14px; }
   td.c-ca a:hover { text-decoration: underline; }
+  /* Pin the three rightmost columns to fixed widths so the BUY / WAR / CA
+     cells line up under each other across stacked sub-tables on the same
+     page. The flexible left-side columns absorb any remaining row width. */
+  th:nth-last-child(3), td.c-buy { width: 100px; min-width: 100px; max-width: 100px; }
+  th:nth-last-child(2), td.c-war { width: 100px; min-width: 100px; max-width: 100px; }
+  th:nth-last-child(1), td.c-ca  { width: 132px; min-width: 132px; max-width: 132px; }
   .buy-btn { display: inline-block; padding: 8px 20px; background: var(--accent); color: var(--bg); border-radius: 4px; font-size: 14px; font-weight: 700; text-decoration: none; letter-spacing: 0.06em; }
   .buy-btn:hover { background: var(--good); }
   .empty-row { text-align: center; color: var(--dim); padding: 56px; font-style: italic; font-size: 15px; }
@@ -113,7 +119,7 @@
 <button data-tab="dex" class="">DEXs</button>
 <a class="ext-link" href="https://plstart.me" target="_blank" rel="noopener noreferrer">WHITE<br>DIRECTORY</a>
 <button data-tab="suggest" class="">SUGGESTIONS<br>SUBMISSIONS</button>
-<div class="tabs-meta">146 tokens · 2026-05-10 08:47 UTC</div>
+<div class="tabs-meta">146 tokens · 2026-05-10 08:49 UTC</div>
 </nav>
 
 <main>
