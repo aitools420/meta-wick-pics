@@ -4,3 +4,4 @@ data.json
 fetch_logos.py
 *.log
 refresh_mcaps.py
+refresh_pipelines.py
