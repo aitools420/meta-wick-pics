@@ -35,7 +35,7 @@
   /* Tab bar */
   .tabs { display: flex; gap: 8px; padding: 14px 18px; overflow-x: auto; border-bottom: 1px solid var(--line); background: #0d0f14; scrollbar-width: thin; align-items: center; }
   .tabs-meta { margin-left: auto; padding-left: 16px; color: var(--dim); font-size: 13px; white-space: nowrap; }
-  .tabs button, .tabs a.ext-link { background: transparent; border: 2px solid var(--line); color: var(--dim); padding: 14px 22px; font: inherit; font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border-radius: 6px; white-space: nowrap; transition: color 0.12s, border-color 0.12s, background 0.12s; text-decoration: none; display: inline-block; }
+  .tabs button, .tabs a.ext-link { background: transparent; border: 2px solid var(--line); color: var(--dim); padding: 8px 18px; font: inherit; font-size: 15px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; border-radius: 6px; white-space: normal; line-height: 1.05; transition: color 0.12s, border-color 0.12s, background 0.12s; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; text-align: center; min-height: 46px; }
   .tabs button:hover, .tabs a.ext-link:hover { color: var(--fg); border-color: var(--dim); }
   .tabs button.active { color: var(--bg); background: var(--accent); border-color: var(--accent); font-weight: 600; }
   /* Preserve case in pCOPIES + DEXs — global text-transform: uppercase
@@ -94,14 +94,14 @@
 <nav class="tabs" id="tabs">
 <button data-tab="rh" class="active">RH</button>
 <button data-tab="pcopies" class="">pCOPIES</button>
-<button data-tab="pump" class="">PUMP TIRES</button>
-<button data-tab="pepe" class="">PEPE META</button>
-<button data-tab="tang" class="">TANG GANG</button>
-<button data-tab="poke" class="">POKE CENTER</button>
-<button data-tab="other" class="">OTHER GREAT COMMUNITIES</button>
+<button data-tab="pump" class="">PUMP<br>TIRES</button>
+<button data-tab="pepe" class="">PEPE<br>META</button>
+<button data-tab="tang" class="">TANG<br>GANG</button>
+<button data-tab="poke" class="">POKE<br>CENTER</button>
+<button data-tab="other" class="">OTHER GREAT<br>COMMUNITIES</button>
 <button data-tab="dex" class="">DEXs</button>
 <a class="ext-link" href="https://plstart.me" target="_blank" rel="noopener noreferrer">DIRECTORY</a>
-<div class="tabs-meta">146 tokens · 2026-05-10 06:28 UTC</div>
+<div class="tabs-meta">146 tokens · 2026-05-10 06:30 UTC</div>
 </nav>
 
 <main>
