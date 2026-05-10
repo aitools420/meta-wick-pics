@@ -82,6 +82,16 @@
   td.c-founder { color: var(--accent); }
 
   footer { padding: 24px 28px; color: var(--dim); font-size: 14px; border-top: 1px solid var(--line); text-align: center; }
+
+  /* Suggestions / Submissions form */
+  .suggest-wrap { max-width: 520px; margin: 32px auto; padding: 28px; border: 1px solid var(--line); border-radius: 10px; background: var(--row); }
+  .suggest-wrap form { display: flex; flex-direction: column; gap: 18px; }
+  .suggest-wrap label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; letter-spacing: 0.06em; color: var(--dim); text-transform: uppercase; }
+  .suggest-wrap input { background: var(--bg); border: 1px solid var(--line); color: var(--fg); padding: 10px 12px; font: inherit; font-size: 16px; border-radius: 6px; outline: none; transition: border-color 0.12s; }
+  .suggest-wrap input:focus { border-color: var(--accent); }
+  .suggest-wrap button { background: var(--accent); color: var(--bg); border: none; padding: 12px 20px; font: inherit; font-size: 15px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-radius: 6px; cursor: pointer; }
+  .suggest-wrap button:hover { filter: brightness(1.1); }
+  .suggest-response { max-width: 520px; margin: 18px auto 0; padding: 22px 24px; border: 2px solid #f87171; border-radius: 10px; background: #2a0a0a; color: #f87171; font-size: 16px; line-height: 1.4; text-align: center; font-weight: 600; letter-spacing: 0.04em; }
   footer code { color: var(--accent); }
 </style>
 </head>
@@ -102,7 +112,7 @@
 <button data-tab="dex" class="">DEXs</button>
 <button data-tab="suggest" class="">SUGGESTIONS<br>SUBMISSIONS</button>
 <a class="ext-link" href="https://plstart.me" target="_blank" rel="noopener noreferrer">DIRECTORY</a>
-<div class="tabs-meta">146 tokens · 2026-05-10 06:53 UTC</div>
+<div class="tabs-meta">146 tokens · 2026-05-10 06:55 UTC</div>
 </nav>
 
 <main>
@@ -243,7 +253,7 @@
 <tr><td class="c-logo"><img class="logo" src="/logos/0x874e3f27140fcb7cd734df9758552f36f1ac5fcf.webp" alt="" loading="lazy" decoding="async"/></td><td class="c-token"><a href="https://dexscreener.com/pulsechain/0x874e3f27140fcb7cd734df9758552f36f1ac5fcf" target="_blank" rel="noopener noreferrer">NUTS</a></td><td class="c-founder">Red Squirrel</td><td class="c-supply">—</td><td class="c-mcap">$121,673</td><td class="c-liq">$15,590</td><td class="c-liq-mcap-pct">12.81%</td><td class="c-shark-cost-usd">$122</td><td class="c-lp-burn">YES</td><td class="c-token-burn-pct">0.00%</td><td class="c-top5-pct">60.0%</td><td class="c-buy"><a class="buy-btn" href="https://swap.wick.pics/?from=PLS&amp;to=0x874e3f27140fcb7cd734df9758552f36f1ac5fcf&amp;amount=7000000" target="_blank" rel="noopener noreferrer">BUY</a></td><td class="c-ca"><a href="https://dexscreener.com/pulsechain/0x874e3f27140fcb7cd734df9758552f36f1ac5fcf" target="_blank" rel="noopener noreferrer" title="0x874e3f27140fcb7cd734df9758552f36f1ac5fcf">0x874e…5fcf</a></td></tr>
 <tr><td class="c-logo"><img class="logo" src="/logos/0x57953dac106a4cda11d90273b1b9d59e169533c0.webp" alt="" loading="lazy" decoding="async"/></td><td class="c-token"><a href="https://dexscreener.com/pulsechain/0x57953dac106a4cda11d90273b1b9d59e169533c0" target="_blank" rel="noopener noreferrer">DEX</a></td><td class="c-founder">—</td><td class="c-supply">—</td><td class="c-mcap">$8,080</td><td class="c-liq">$1,731</td><td class="c-liq-mcap-pct">21.42%</td><td class="c-shark-cost-usd">$8.08</td><td class="c-lp-burn">66%</td><td class="c-token-burn-pct">0.03%</td><td class="c-top5-pct">25.3%</td><td class="c-buy"><a class="buy-btn" href="https://swap.wick.pics/?from=PLS&amp;to=0x57953dac106a4cda11d90273b1b9d59e169533c0&amp;amount=7000000" target="_blank" rel="noopener noreferrer">BUY</a></td><td class="c-ca"><a href="https://dexscreener.com/pulsechain/0x57953dac106a4cda11d90273b1b9d59e169533c0" target="_blank" rel="noopener noreferrer" title="0x57953dac106a4cda11d90273b1b9d59e169533c0">0x5795…33c0</a></td></tr>
 <tr><td class="c-logo"><img class="logo" src="/logos/0xbbcf895bfcb57d0f457d050bb806d1499436c0ce.webp" alt="" loading="lazy" decoding="async"/></td><td class="c-token"><a href="https://dexscreener.com/pulsechain/0xbbcf895bfcb57d0f457d050bb806d1499436c0ce" target="_blank" rel="noopener noreferrer">IM</a></td><td class="c-founder">Internet Money</td><td class="c-supply">—</td><td class="c-mcap">$91,096</td><td class="c-liq">$3,983</td><td class="c-liq-mcap-pct">4.37%</td><td class="c-shark-cost-usd">$91</td><td class="c-lp-burn">YES</td><td class="c-token-burn-pct">0.00%</td><td class="c-top5-pct">23.0%</td><td class="c-buy"><a class="buy-btn" href="https://swap.wick.pics/?from=PLS&amp;to=0xbbcf895bfcb57d0f457d050bb806d1499436c0ce&amp;amount=7000000" target="_blank" rel="noopener noreferrer">BUY</a></td><td class="c-ca"><a href="https://dexscreener.com/pulsechain/0xbbcf895bfcb57d0f457d050bb806d1499436c0ce" target="_blank" rel="noopener noreferrer" title="0xbbcf895bfcb57d0f457d050bb806d1499436c0ce">0xbbcf…c0ce</a></td></tr></tbody></table></div></section>
-<section class="panel" data-panel="suggest"><h2>SUGGESTIONS SUBMISSIONS <span class="count">· 0 tokens</span></h2><div class="table-wrap"><table><thead><tr><th></th><th>TOKEN</th><th>FOUNDER</th><th>SUPPLY</th><th>MARKET CAP</th><th>LIQ</th><th>LIQ / MCAP</th><th>COST OF SHARK ($)</th><th>LP BURN</th><th>TOKEN BURN (%)</th><th>HOLDERS TOP 10 (%)</th><th>BUY</th><th>CA</th></tr></thead><tbody><tr><td colspan="13" class="empty-row">no tokens added yet — edit data.json + rebuild</td></tr></tbody></table></div></section>
+<section class="panel" data-panel="suggest"><div class="suggest-wrap"><form id="suggest-form" autocomplete="off" novalidate><label>TOKEN TICKER<input name="ticker" maxlength="10" required/></label><label>COMMUNITY / META<input name="meta" maxlength="25" required/></label><button type="submit">Submit</button></form><div id="suggest-response" class="suggest-response" hidden></div></div></section>
 </main>
 
 <footer>
@@ -330,6 +340,17 @@
       th.addEventListener('click', () => sortTable(table, idx));
     });
   });
+
+  // SUGGESTIONS form — show the canned response on submit.
+  const suggestForm = document.getElementById('suggest-form');
+  if (suggestForm) {
+    suggestForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const resp = document.getElementById('suggest-response');
+      resp.textContent = 'I DONT FUCKING WORK FOR YOU, FUCK OFF AND GO MAKE YOUR OWN SITE YOU FUCKING CUCK';
+      resp.hidden = false;
+    });
+  }
 
   // Apply explicit default sorts (only tables that opt in via
   // data-default-sort-col attribute show the arrow on landing).
