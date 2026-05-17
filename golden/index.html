@@ -909,6 +909,7 @@ footer .disclaimer {
 const WICK_CA   = "0x8CDaf3d630Da9E1450832924D5701CC0500E9cfC";
 const HEX_CA    = "0x2b591e99afe9F32eAA6214f7B7629768c40Eeb39";
 const RAICHU_CA = "0xa6cFfE8Bc798628573a3e91Ed84EfD92D6D8e8B0";
+const DPEPE_CA  = "0xE9e15d6F7380D1718a3bdeeE720eE979fAC1F5BC";
 
 // Section list (rendered top-to-bottom). Each traveller declares which
 // section it belongs to via its `section` key.
@@ -940,6 +941,18 @@ const travellers = [
     coin: "?",
     fortune: null,
     fortuneLive: false,
+    history: []
+  },
+  {
+    section: "crowned",
+    name: "BaalRock",
+    nameLink: "https://x.com/0xBaalRock_FINK",
+    avatar: "🗿",         // stone idol fallback if unavatar 404s
+    inscribed: "Day XVIII, May 2026",
+    coin: "DPEPE",
+    coinLink: "https://dexscreener.com/pulsechain/" + DPEPE_CA,
+    fortune: null,
+    fortuneLive: true,
     history: []
   },
   {
