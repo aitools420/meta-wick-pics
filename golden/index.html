@@ -910,6 +910,7 @@ const WICK_CA   = "0x8CDaf3d630Da9E1450832924D5701CC0500E9cfC";
 const HEX_CA    = "0x2b591e99afe9F32eAA6214f7B7629768c40Eeb39";
 const RAICHU_CA = "0xa6cFfE8Bc798628573a3e91Ed84EfD92D6D8e8B0";
 const DPEPE_CA  = "0xE9e15d6F7380D1718a3bdeeE720eE979fAC1F5BC";
+const FINK_CA   = "";  // TODO: paste PulseChain FINK CA to enable live mcap
 
 // Section list (rendered top-to-bottom). Each traveller declares which
 // section it belongs to via its `section` key.
@@ -949,10 +950,11 @@ const travellers = [
     nameLink: "https://x.com/0xBaalRock_FINK",
     avatar: "🗿",         // stone idol fallback if unavatar 404s
     inscribed: "Day XVIII, May 2026",
-    coin: "DPEPE",
-    coinLink: "https://dexscreener.com/pulsechain/" + DPEPE_CA,
+    coin: "FINK",
+    // coinLink set automatically below if FINK_CA is provided
+    coinLink: FINK_CA ? "https://dexscreener.com/pulsechain/" + FINK_CA : null,
     fortune: null,
-    fortuneLive: true,
+    fortuneLive: !!FINK_CA,
     history: []
   },
   {
