@@ -467,8 +467,13 @@ a.coin:active { transform: scale(0.97); }
   50%     { filter: drop-shadow(0 0 8px rgba(255,220,120,0.4)); }
 }
 
-/* Fortune — bold market cap, polished gold-on-parchment */
+/* Fortune — bold market cap, polished gold-on-black ingot plate */
 .fortune {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  padding: 4px 10px 5px;
+  border-radius: 5px;
   font-family: 'Cinzel Decorative', serif;
   font-weight: 900;
   font-size: clamp(14px, 4vw, 18px);
@@ -483,20 +488,35 @@ a.coin:active { transform: scale(0.97); }
   background-clip: text;
   -webkit-text-fill-color: transparent;
   filter:
-    drop-shadow(0 1px 0 rgba(255,250,200,0.85))
-    drop-shadow(0 1px 1px rgba(80,40,0,0.55))
+    drop-shadow(0 1px 0 rgba(255,250,200,0.55))
+    drop-shadow(0 1px 1px rgba(0,0,0,0.7))
     drop-shadow(0 0 6px rgba(255,180,40,0.55));
   font-variant-numeric: tabular-nums;
   line-height: 1.1;
   white-space: nowrap;
 }
+.fortune::before {
+  /* black ingot plate behind the gold text */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #1a1208 0%, #0a0604 55%, #050302 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,200,80,0.35),
+    inset 0 -1px 0 rgba(0,0,0,0.85),
+    inset 0 0 0 1px rgba(180,120,20,0.55),
+    0 0 0 1px rgba(0,0,0,0.6),
+    0 2px 6px rgba(0,0,0,0.55);
+}
 .fortune.loading {
-  -webkit-text-fill-color: var(--ink-dim);
+  -webkit-text-fill-color: rgba(240,210,150,0.7);
   background: none;
   filter: none;
   font-style: italic;
   font-size: clamp(12px, 3.4vw, 14px);
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 /* Wax seal · Roman numeral Epoch button
