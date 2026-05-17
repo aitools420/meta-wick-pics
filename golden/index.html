@@ -471,13 +471,16 @@ a.coin:active { transform: scale(0.97); }
 }
 
 /* Fortune — bold market cap, polished gold-on-black ingot plate */
-/* Row layout label + plate stack (single-row entries only) */
+/* Row layout label + plate stack (single-row entries only).
+   Fixed width per breakpoint so the column to the LEFT (the coin)
+   lines up under itself across every entry in a section. */
 .fortune-col {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3px;
   flex-shrink: 0;
+  width: 96px;
 }
 
 /* Fortune plate — chunky black "ingot" rectangle that the gold text sits in */
@@ -822,6 +825,7 @@ footer .disclaimer {
   .avatar { width: 38px; height: 38px; font-size: 22px; }
   .coin { width: 48px; height: 48px; font-size: 11px; }
   .seal { width: 42px; height: 42px; font-size: 12px; }
+  .fortune-col { width: 78px; }
 }
 
 /* Larger screens — desktop view */
@@ -832,6 +836,7 @@ footer .disclaimer {
   .avatar { width: 56px; height: 56px; font-size: 30px; }
   .coin { width: 72px; height: 72px; font-size: 16px; }
   .seal { width: 60px; height: 60px; font-size: 16px; }
+  .fortune-col { width: 120px; }
   .hoard-inner { padding: 18px 22px; }
 }
 </style>
