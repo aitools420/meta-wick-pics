@@ -1307,6 +1307,15 @@ function renderEntries(sectionKey) {
   const rows = travellers
     .map((t, i) => ({ t, i }))
     .filter(({ t }) => (t.section || sections[0].key) === sectionKey);
+  // Sort by current fortune, highest → lowest. Travellers whose fortune
+  // is still null (live entries pre-hydration, or placeholders) sink to
+  // the bottom; once the live fetch resolves, renderList re-runs and
+  // they slot into their correct rank.
+  rows.sort((a, b) => {
+    const fa = (typeof a.t.fortune === 'number') ? a.t.fortune : -Infinity;
+    const fb = (typeof b.t.fortune === 'number') ? b.t.fortune : -Infinity;
+    return fb - fa;
+  });
   if (!rows.length) {
     return `<div class="entries-empty">No travellers in this list yet.</div>`;
   }
@@ -1406,6 +1415,8 @@ async function hydrateLiveFortunes() {
     if (mc != null) setCachedMcap(ca, mc);
     paintFortune(i, mc);
   }
+  // Re-sort the lists once every live fortune has settled.
+  renderList();
 }
 
 /* ============================================================
