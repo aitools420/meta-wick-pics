@@ -406,18 +406,25 @@ a.coin:active { transform: scale(0.97); }
   50%     { filter: drop-shadow(0 0 8px rgba(255,220,120,0.4)); }
 }
 
-/* Fortune — bold market cap, gold-on-parchment */
+/* Fortune — bold market cap, polished gold-on-parchment */
 .fortune {
   font-family: 'Cinzel Decorative', serif;
   font-weight: 900;
   font-size: clamp(14px, 4vw, 18px);
   letter-spacing: 0.02em;
-  background: linear-gradient(180deg, #c89020 0%, #8a5a08 100%);
+  background: linear-gradient(180deg,
+    #fff5c2  0%,
+    #ffe17a 22%,
+    #f0b937 48%,
+    #c89020 78%,
+    #6b3a08 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 1px 0 rgba(255,250,200,0.4);
-  filter: drop-shadow(0 1px 1px rgba(60,30,10,0.35));
+  filter:
+    drop-shadow(0 1px 0 rgba(255,250,200,0.85))
+    drop-shadow(0 1px 1px rgba(80,40,0,0.55))
+    drop-shadow(0 0 6px rgba(255,180,40,0.55));
   font-variant-numeric: tabular-nums;
   line-height: 1.1;
   white-space: nowrap;
