@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2a1610">
+<meta name="robots" content="noindex,nofollow">
+<title>The Golden Coin List</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🪙%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;500;600;700;900&family=IM+Fell+English+SC&family=IM+Fell+English:ital,wght@0,400;1,400&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   THE GOLDEN COIN LIST · Hearthstone-style parchment leaderboard
+   ============================================================ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold-light: #ffe9a0;
+  --gold-mid:   #f0b937;
+  --gold-deep:  #b07710;
+  --gold-dark:  #4a2c08;
+  --wood-light: #6b3a17;
+  --wood-mid:   #4a2410;
+  --wood-dark:  #2a1610;
+  --parchment-light: #f6e6b8;
+  --parchment-mid:   #e9d49a;
+  --parchment-dark:  #c8ab74;
+  --ink:        #3a2410;
+  --ink-dim:    #6b4a26;
+  --wax-red:    #b91c1c;
+  --wax-deep:   #7f1d1d;
+  --gain:       #22c55e;
+  --gain-glow:  rgba(74,222,128,0.7);
+  --loss:       #ef4444;
+  --loss-glow:  rgba(239,68,68,0.7);
+}
+
+html, body {
+  min-height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'IM Fell English', Georgia, serif;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%,   rgba(255,200,100,0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 50% 100%, rgba(0,0,0,0.55)        0%, transparent 70%),
+    repeating-linear-gradient(
+      94deg,
+      #3a2110 0px,  #3a2110 78px,
+      #2c1808 79px, #2c1808 80px,
+      #45291a 81px, #45291a 83px,
+      #2c1808 84px, #2c1808 85px
+    ),
+    linear-gradient(180deg, #4a2810 0%, #1f0e08 100%);
+  background-attachment: fixed, fixed, scroll, fixed;
+  min-height: 100vh;
+  padding: 24px 12px 48px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Soft tavern lantern glow at top */
+body::before {
+  content: '';
+  position: fixed;
+  top: -120px; left: 50%; transform: translateX(-50%);
+  width: 480px; height: 240px;
+  background: radial-gradient(ellipse at center, rgba(255,200,100,0.18) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.screen { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; }
+.screen[hidden] { display: none; }
+
+/* ============================================================
+   BANNER · grand golden ribbon
+   ============================================================ */
+.banner {
+  position: relative;
+  margin: 8px 0 28px;
+  padding: 22px 28px 24px;
+  text-align: center;
+  background:
+    linear-gradient(180deg,
+      #fff2c8 0%,
+      #ffd96a 18%,
+      #f0b937 50%,
+      #c89020 78%,
+      #8a5a08 100%);
+  border-radius: 4px;
+  box-shadow:
+    inset 0 2px 0 rgba(255,250,200,0.7),
+    inset 0 -3px 0 rgba(80,40,0,0.5),
+    inset 0 0 18px rgba(255,220,140,0.4),
+    0 0 0 2px var(--gold-dark),
+    0 0 0 4px var(--gold-deep),
+    0 0 0 6px var(--gold-dark),
+    0 0 32px rgba(255,180,40,0.5),
+    0 10px 28px rgba(0,0,0,0.7);
+}
+.banner::before, .banner::after {
+  content: '';
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fff5c2 0%, #ffd966 50%, #8a5a08 100%);
+  box-shadow: inset 0 -1px 2px rgba(60,30,0,0.6), 0 0 0 1.5px var(--gold-dark), 0 0 6px rgba(255,200,80,0.6);
+}
+.banner::before { left: 14px; }
+.banner::after  { right: 14px; }
+
+.banner h1 {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 900;
+  font-size: clamp(22px, 6.5vw, 38px);
+  letter-spacing: 0.02em;
+  line-height: 1.05;
+  color: #3a1d05;
+  text-shadow:
+    0 1px 0 #fff5c2,
+    0 -1px 0 #6b3a08,
+    1px 1px 0 rgba(255,250,200,0.6),
+    2px 3px 4px rgba(60,30,0,0.4);
+}
+.banner .subtitle {
+  margin-top: 10px;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: clamp(12px, 3.4vw, 15px);
+  color: #5a2f08;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 0 rgba(255,250,200,0.5);
+}
+
+/* ============================================================
+   PARCHMENT · main scroll container
+   ============================================================ */
+.parchment {
+  position: relative;
+  padding: 4px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold-mid) 50%, var(--gold-deep) 100%);
+  box-shadow:
+    0 0 0 2px var(--gold-dark),
+    0 0 24px rgba(0,0,0,0.5),
+    0 12px 32px rgba(0,0,0,0.7);
+}
+.parchment-inner {
+  position: relative;
+  padding: 22px 14px 28px;
+  border-radius: 4px;
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 10%, rgba(255,255,255,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 90%, rgba(120,80,30,0.20) 0%, transparent 60%),
+    linear-gradient(135deg, var(--parchment-light) 0%, var(--parchment-mid) 50%, var(--parchment-dark) 100%);
+  box-shadow:
+    inset 0 0 40px rgba(120,80,30,0.25),
+    inset 0 0 80px rgba(60,30,10,0.18),
+    inset 0 2px 6px rgba(60,30,10,0.18);
+}
+/* Parchment edge wear — corner stains */
+.parchment-inner::before, .parchment-inner::after {
+  content: '';
+  position: absolute;
+  width: 40%; height: 40%;
+  pointer-events: none;
+}
+.parchment-inner::before {
+  top: 0; left: 0;
+  background: radial-gradient(circle at 0% 0%, rgba(120,70,20,0.18) 0%, transparent 60%);
+}
+.parchment-inner::after {
+  bottom: 0; right: 0;
+  background: radial-gradient(circle at 100% 100%, rgba(120,70,20,0.18) 0%, transparent 60%);
+}
+
+/* ============================================================
+   ENTRY CARD · each traveller row
+   ============================================================ */
+#list, #history { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 18px; }
+
+.entry {
+  position: relative;
+  padding: 3px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold-mid) 45%, var(--gold-deep) 100%);
+  box-shadow:
+    0 0 0 1.5px var(--gold-dark),
+    0 0 14px rgba(255,180,40,0.18),
+    0 6px 14px rgba(60,30,10,0.35);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.entry:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 0 1.5px var(--gold-dark),
+    0 0 22px rgba(255,200,80,0.32),
+    0 10px 18px rgba(60,30,10,0.45);
+}
+.entry-body {
+  background:
+    radial-gradient(ellipse 70% 50% at 30% 10%, rgba(255,255,255,0.18) 0%, transparent 70%),
+    linear-gradient(145deg, #f0dba5 0%, #d9c084 100%);
+  border-radius: 3px;
+  padding: 14px 14px 16px;
+  box-shadow: inset 0 1px 2px rgba(60,30,10,0.15);
+}
+
+/* Top row: avatar + name + date */
+.entry-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1.5px dashed rgba(120,70,20,0.4);
+  margin-bottom: 14px;
+}
+.avatar {
+  flex-shrink: 0;
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, #6b4226 0%, #3d2410 70%, #2a1810 100%);
+  box-shadow:
+    inset 0 -3px 6px rgba(0,0,0,0.5),
+    inset 0 3px 4px rgba(255,200,120,0.20),
+    0 0 0 2px var(--gold-deep),
+    0 0 0 3.5px var(--gold-dark),
+    0 0 0 5px var(--gold-mid),
+    0 0 0 6.5px var(--gold-dark),
+    0 4px 8px rgba(0,0,0,0.45);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px;
+  line-height: 1;
+}
+.entry-head-text { flex: 1; min-width: 0; }
+.entry-head .label { margin-top: 2px; }
+.entry-head .label:first-child { margin-top: 0; }
+.entry-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 700;
+  font-size: clamp(16px, 4.6vw, 20px);
+  color: var(--ink);
+  letter-spacing: 0.01em;
+  line-height: 1.15;
+  text-shadow: 0 1px 0 rgba(255,250,200,0.5);
+}
+.entry-date {
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: clamp(12px, 3.6vw, 14px);
+  color: var(--ink-dim);
+  letter-spacing: 0.02em;
+}
+
+/* Labels — small SCRIBED tags */
+.label {
+  font-family: 'IM Fell English SC', serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: #7a5018;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+/* Middle row: coin + fortune + epoch seal */
+.entry-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+}
+.coin-block, .fortune-block, .epoch-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.fortune-block { align-items: flex-start; padding-left: 6px; }
+.fortune-block .label { align-self: flex-start; }
+.epoch-block .label { font-size: 10px; }
+
+/* The Coin — glowing embossed gold disc */
+.coin {
+  width: 84px; height: 84px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, #fff8d0 0%, #ffe17a 22%, #f0b937 55%, #b07710 88%, #6b3a08 100%);
+  box-shadow:
+    inset 0 -4px 8px rgba(80,40,0,0.55),
+    inset 0 4px 8px rgba(255,250,200,0.55),
+    inset 0 0 0 3px #b07710,
+    inset 0 0 0 4px #6b3a08,
+    0 0 0 1.5px var(--gold-dark),
+    0 0 14px rgba(255,180,40,0.55),
+    0 6px 12px rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 900;
+  font-size: 17px;
+  letter-spacing: 0.04em;
+  color: #4a2c08;
+  text-shadow:
+    0 1px 0 #fff5c2,
+    0 -1px 0 #6b3a08;
+  position: relative;
+  animation: coinShimmer 4s ease-in-out infinite;
+}
+.coin::before {
+  /* tiny stars on the rim */
+  content: '★';
+  position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+  font-size: 8px; color: rgba(74,44,8,0.5);
+}
+.coin::after {
+  content: '★';
+  position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
+  font-size: 8px; color: rgba(74,44,8,0.5);
+}
+@keyframes coinShimmer {
+  0%,100% { filter: drop-shadow(0 0 0 transparent); }
+  50%     { filter: drop-shadow(0 0 8px rgba(255,220,120,0.4)); }
+}
+
+/* Fortune — bold market cap, gold-on-parchment */
+.fortune {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 900;
+  font-size: clamp(22px, 6vw, 28px);
+  letter-spacing: 0.02em;
+  background: linear-gradient(180deg, #c89020 0%, #8a5a08 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 1px 0 rgba(255,250,200,0.4);
+  filter: drop-shadow(0 1px 1px rgba(60,30,10,0.35));
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+/* Wax seal · Roman numeral Epoch button */
+.seal {
+  width: 64px; height: 64px;
+  border: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 28%, #f87171 0%, #dc2626 30%, #b91c1c 60%, #7f1d1d 100%);
+  box-shadow:
+    inset 0 -3px 6px rgba(0,0,0,0.55),
+    inset 0 3px 6px rgba(255,160,160,0.40),
+    inset 0 0 0 1px #5a0a0a,
+    0 0 0 1.5px #3a0505,
+    0 0 14px rgba(220,38,38,0.5),
+    0 6px 12px rgba(0,0,0,0.55);
+  font-family: 'Cinzel', serif;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: 0.08em;
+  color: #ffe9a0;
+  text-shadow:
+    0 1px 0 #5a0a0a,
+    0 -1px 0 #4a0505,
+    0 2px 4px rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  cursor: default;
+  padding: 0;
+  position: relative;
+  transition: transform 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+}
+.seal::before {
+  /* decorative rim notches */
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1px dashed rgba(255,200,160,0.25);
+  pointer-events: none;
+}
+.seal.clickable {
+  cursor: pointer;
+  animation: sealPulse 2.6s ease-in-out infinite;
+}
+.seal.clickable:hover, .seal.clickable:focus-visible {
+  transform: scale(1.06) rotate(-2deg);
+  filter: brightness(1.15);
+  box-shadow:
+    inset 0 -3px 6px rgba(0,0,0,0.55),
+    inset 0 3px 6px rgba(255,180,180,0.55),
+    inset 0 0 0 1px #5a0a0a,
+    0 0 0 1.5px #3a0505,
+    0 0 22px rgba(255,80,80,0.75),
+    0 8px 16px rgba(0,0,0,0.6);
+  outline: none;
+}
+.seal.clickable:active { transform: scale(0.98); }
+.seal.spent {
+  background:
+    radial-gradient(circle at 32% 28%, #a8a29e 0%, #78716c 35%, #44403c 70%, #292524 100%);
+  color: #d6d3d1;
+  box-shadow:
+    inset 0 -3px 6px rgba(0,0,0,0.55),
+    inset 0 3px 6px rgba(255,255,255,0.10),
+    inset 0 0 0 1px #1c1917,
+    0 0 0 1.5px #0c0a09,
+    0 4px 8px rgba(0,0,0,0.5);
+  filter: saturate(0.3);
+  cursor: default;
+}
+.seal.spent::before { border-color: rgba(255,255,255,0.10); }
+@keyframes sealPulse {
+  0%,100% { box-shadow:
+    inset 0 -3px 6px rgba(0,0,0,0.55),
+    inset 0 3px 6px rgba(255,160,160,0.40),
+    inset 0 0 0 1px #5a0a0a,
+    0 0 0 1.5px #3a0505,
+    0 0 14px rgba(220,38,38,0.5),
+    0 6px 12px rgba(0,0,0,0.55); }
+  50%     { box-shadow:
+    inset 0 -3px 6px rgba(0,0,0,0.55),
+    inset 0 3px 6px rgba(255,160,160,0.40),
+    inset 0 0 0 1px #5a0a0a,
+    0 0 0 1.5px #3a0505,
+    0 0 24px rgba(255,80,80,0.85),
+    0 6px 12px rgba(0,0,0,0.55); }
+}
+
+/* ============================================================
+   SCREEN 2 · Detail (Tale of Past Hoards)
+   ============================================================ */
+.plaque {
+  position: relative;
+  margin: 0 0 22px;
+  padding: 18px 24px 20px;
+  text-align: center;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, #6b3a17 0%, #4a2410 55%, #3d1f0d 100%);
+  box-shadow:
+    inset 0 2px 4px rgba(255,200,100,0.18),
+    inset 0 -3px 6px rgba(0,0,0,0.6),
+    0 0 0 1.5px var(--gold-dark),
+    0 0 0 3.5px var(--gold-deep),
+    0 0 0 5px var(--gold-dark),
+    0 0 22px rgba(255,170,60,0.18),
+    0 10px 24px rgba(0,0,0,0.7);
+}
+.plaque::before, .plaque::after {
+  /* iron-stud rivets */
+  content: '';
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #94a3b8 0%, #475569 60%, #1e293b 100%);
+  box-shadow: inset 0 -1px 2px rgba(0,0,0,0.5), 0 0 0 1px #0a0f1a;
+}
+.plaque::before { left: 10px; }
+.plaque::after  { right: 10px; }
+.plaque h2 {
+  font-family: 'Uncial Antiqua', 'Cinzel Decorative', serif;
+  font-size: clamp(18px, 5.2vw, 24px);
+  letter-spacing: 0.04em;
+  color: var(--gold-light);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.85), 0 0 8px rgba(255,180,40,0.25);
+}
+.plaque .traveller-name {
+  margin-top: 6px;
+  font-family: 'IM Fell English SC', serif;
+  letter-spacing: 0.14em;
+  font-size: clamp(11px, 3.4vw, 13px);
+  color: #f0d49a;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+}
+
+/* Hoard list */
+.hoard {
+  position: relative;
+  padding: 3px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, var(--gold-light) 0%, var(--gold-mid) 45%, var(--gold-deep) 100%);
+  box-shadow:
+    0 0 0 1.5px var(--gold-dark),
+    0 4px 10px rgba(60,30,10,0.4);
+}
+.hoard-inner {
+  background:
+    radial-gradient(ellipse 70% 50% at 30% 10%, rgba(255,255,255,0.18) 0%, transparent 70%),
+    linear-gradient(145deg, #f0dba5 0%, #d9c084 100%);
+  border-radius: 3px;
+  padding: 14px 16px;
+  box-shadow: inset 0 1px 2px rgba(60,30,10,0.15);
+}
+.hoard-name {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 900;
+  font-size: clamp(18px, 4.8vw, 22px);
+  text-align: center;
+  background: linear-gradient(180deg, #c89020 0%, #6b3a08 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+  text-shadow: 0 1px 0 rgba(255,250,200,0.4);
+  filter: drop-shadow(0 1px 1px rgba(60,30,10,0.35));
+}
+.hoard-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 8px 0;
+  border-top: 1.5px dashed rgba(120,70,20,0.4);
+  border-bottom: 1.5px dashed rgba(120,70,20,0.4);
+}
+.hoard-row > div { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.hoard-row .value {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: clamp(15px, 4.2vw, 18px);
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+.spoils-row {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.spoils {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 900;
+  font-size: clamp(26px, 7vw, 34px);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.spoils.gain {
+  color: #4ade80;
+  text-shadow:
+    -1.2px -1.2px 0 #14532d,
+     1.2px -1.2px 0 #14532d,
+    -1.2px  1.2px 0 #14532d,
+     1.2px  1.2px 0 #14532d,
+    0 0 10px var(--gain-glow),
+    0 2px 0 #166534;
+}
+.spoils.loss {
+  color: #fb7185;
+  text-shadow:
+    -1.2px -1.2px 0 #5a0a0a,
+     1.2px -1.2px 0 #5a0a0a,
+    -1.2px  1.2px 0 #5a0a0a,
+     1.2px  1.2px 0 #5a0a0a,
+    0 0 10px var(--loss-glow),
+    0 2px 0 #7f1d1d;
+}
+
+/* Back button — chunky wooden carved arrow */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  padding: 12px 22px 14px 18px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  background:
+    linear-gradient(180deg, #7a4520 0%, #4a2410 55%, #3d1f0d 100%);
+  border-radius: 6px;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+  box-shadow:
+    inset 0 2px 4px rgba(255,200,100,0.22),
+    inset 0 -3px 6px rgba(0,0,0,0.55),
+    0 0 0 1.5px var(--gold-dark),
+    0 0 0 3px var(--gold-deep),
+    0 0 0 4.5px var(--gold-dark),
+    0 6px 14px rgba(0,0,0,0.6);
+  transition: transform 0.12s, filter 0.12s;
+}
+.back-btn:hover, .back-btn:focus-visible { filter: brightness(1.12); outline: none; }
+.back-btn:active { transform: translateY(1px); }
+.back-btn .arrow {
+  width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 30% 30%, #fff5c2 0%, #ffd966 50%, #8a5a08 100%);
+  border-radius: 50%;
+  font-size: 14px;
+  color: #4a2c08;
+  box-shadow: inset 0 -1px 2px rgba(60,30,0,0.6), 0 0 0 1.5px var(--gold-dark);
+  line-height: 1;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  position: relative; z-index: 1;
+  max-width: 720px;
+  margin: 28px auto 0;
+  text-align: center;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: rgba(240,210,150,0.55);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+}
+footer a { color: rgba(255,230,170,0.85); text-decoration: none; }
+footer a:hover { color: var(--gold-light); }
+
+/* ============================================================
+   RESPONSIVE — extra-narrow phones
+   ============================================================ */
+@media (max-width: 380px) {
+  body { padding: 16px 8px 36px; }
+  .banner { padding: 18px 22px 20px; }
+  .parchment-inner { padding: 18px 10px 22px; }
+  .entry-body { padding: 12px 10px 14px; }
+  .entry-head { gap: 11px; }
+  .avatar { width: 50px; height: 50px; font-size: 26px; }
+  .coin { width: 72px; height: 72px; font-size: 15px; }
+  .seal { width: 56px; height: 56px; font-size: 15px; }
+  .entry-grid { gap: 10px; }
+}
+
+/* Larger screens — desktop view */
+@media (min-width: 760px) {
+  body { padding: 36px 16px 60px; }
+  .entry-body { padding: 18px 22px 20px; }
+  .entry-head { gap: 18px; }
+  .avatar { width: 64px; height: 64px; font-size: 32px; }
+  .coin { width: 96px; height: 96px; font-size: 19px; }
+  .seal { width: 72px; height: 72px; font-size: 18px; }
+  .hoard-inner { padding: 18px 22px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     SCREEN 1 · The Golden Coin List
+     ============================================================ -->
+<section id="screen-main" class="screen">
+  <header class="banner">
+    <h1>The Golden Coin List</h1>
+    <div class="subtitle">A ledger of bold travellers and the fortunes they ride</div>
+  </header>
+
+  <div class="parchment">
+    <div class="parchment-inner">
+      <div id="list"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SCREEN 2 · Tale of Past Hoards
+     ============================================================ -->
+<section id="screen-detail" class="screen" hidden>
+  <button class="back-btn" type="button" onclick="closeDetail()" aria-label="Return to the Golden Coin List">
+    <span class="arrow" aria-hidden="true">◄</span>
+    <span>Return</span>
+  </button>
+
+  <div class="plaque">
+    <h2>Tale of Past Hoards</h2>
+    <div class="traveller-name" id="detail-name">—</div>
+  </div>
+
+  <div class="parchment">
+    <div class="parchment-inner">
+      <div id="history"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Inscribed by the keepers of <a href="https://meta.wick.pics/">meta.wick.pics</a></div>
+</footer>
+
+<script>
+/* ============================================================
+   DATA · sample travellers (replace with real entries)
+   Each traveller's `epoch` is the count of coins they have held
+   (current + history.length). Epoch > 1 makes the seal clickable.
+   ============================================================ */
+const travellers = [
+  {
+    name: "Ser Aldric Goldhand",
+    avatar: "🦁",
+    inscribed: "Day XII, Moon of Ash, AC 1247",
+    coin: "WICK",
+    fortune: 2_420_000,
+    history: [
+      { name: "FROG",  forged:    80_000, faded:   420_000 },
+      { name: "GNOM",  forged:    50_000, faded:    12_000 },
+      { name: "BARD",  forged:   200_000, faded: 1_800_000 },
+      { name: "ORCS",  forged:   350_000, faded:   180_000 },
+      { name: "DRGN",  forged:   600_000, faded: 4_200_000 },
+      { name: "ANVL",  forged: 1_100_000, faded:   880_000 }
+    ]
+  },
+  {
+    name: "Lady Mireille Emberhall",
+    avatar: "🔥",
+    inscribed: "Eve of Iron Tide, AC 1247",
+    coin: "HEX",
+    fortune: 69_410_000,
+    history: [
+      { name: "EMBR",  forged:   320_000, faded: 1_240_000 },
+      { name: "SCRL",  forged:   880_000, faded:   210_000 }
+    ]
+  },
+  {
+    name: "The Whispering Skald",
+    avatar: "🪶",
+    inscribed: "Day XX, Crimson Moon",
+    coin: "FROG",
+    fortune: 1_180_000,
+    history: [
+      { name: "LUTE",  forged:   140_000, faded:   320_000 },
+      { name: "VRSE",  forged:    60_000, faded:    18_000 },
+      { name: "MYTH",  forged:   420_000, faded: 2_100_000 },
+      { name: "RUNE",  forged:   200_000, faded:    52_000 }
+    ]
+  },
+  {
+    name: "Sage Therion the Wise",
+    avatar: "🌙",
+    inscribed: "Twilight of Embers, 4th of Hollow",
+    coin: "MYST",
+    fortune: 4_710_000,
+    history: [
+      { name: "GRIM",  forged:    90_000, faded: 1_100_000 },
+      { name: "TOME",  forged:   220_000, faded:   140_000 },
+      { name: "SAGE",  forged:   480_000, faded: 6_400_000 },
+      { name: "QUIL",  forged:   310_000, faded:    72_000 },
+      { name: "MOON",  forged:   140_000, faded:   970_000 },
+      { name: "ECHO",  forged:   620_000, faded:   430_000 },
+      { name: "DUSK",  forged:   930_000, faded: 3_120_000 },
+      { name: "GLPH",  forged:   180_000, faded:    44_000 }
+    ]
+  },
+  {
+    name: "Brunhilde Stormfist",
+    avatar: "⚔️",
+    inscribed: "High Sun, 5th of Forge",
+    coin: "ORCS",
+    fortune: 324_000,
+    history: [
+      { name: "HAMR",  forged:    72_000, faded:   188_000 }
+    ]
+  },
+  {
+    name: "Captain Wolfwood",
+    avatar: "🐺",
+    inscribed: "First Light, 3rd of Hollow",
+    coin: "BARD",
+    fortune: 850_000,
+    history: []
+  },
+  {
+    name: "Cassian Nightmist",
+    avatar: "🗡️",
+    inscribed: "Day VIII, Velvet Moon",
+    coin: "SHRD",
+    fortune: 14_520_000,
+    history: [
+      { name: "FANG",  forged:   180_000, faded: 1_100_000 },
+      { name: "VEIL",  forged:   620_000, faded:   240_000 },
+      { name: "WISP",  forged:   440_000, faded: 3_280_000 }
+    ]
+  },
+  {
+    name: "The Iron Bard",
+    avatar: "⚒️",
+    inscribed: "Last Bell, 11th of Hollow",
+    coin: "ANVL",
+    fortune: 880_000,
+    history: [
+      { name: "FORG",  forged:    60_000, faded:   720_000 },
+      { name: "SPRK",  forged:   210_000, faded:   860_000 },
+      { name: "PYRE",  forged:   480_000, faded:    98_000 },
+      { name: "SOOT",  forged:    90_000, faded:    36_000 },
+      { name: "CINR",  forged:   320_000, faded: 1_640_000 }
+    ]
+  },
+  {
+    name: "Lyra Faewhisper",
+    avatar: "⭐",
+    inscribed: "Dawn, 1st of Verdant",
+    coin: "DRYAD",
+    fortune: 2_130_000,
+    history: []
+  },
+  {
+    name: "The Crimson Bandit",
+    avatar: "🛡️",
+    inscribed: "Midnight, 28th of Frost",
+    coin: "STAB",
+    fortune: 640_000,
+    history: [
+      { name: "DAGR",  forged:   140_000, faded:   480_000 },
+      { name: "MASK",  forged:   220_000, faded:    66_000 },
+      { name: "PURS",  forged:   80_000,  faded:   910_000 },
+      { name: "SHIV",  forged:   310_000, faded:   140_000 },
+      { name: "CLOK",  forged:   480_000, faded: 1_220_000 },
+      { name: "OATH",  forged:   180_000, faded:    48_000 },
+      { name: "TOLL",  forged:   720_000, faded: 2_440_000 }
+    ]
+  }
+];
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+function toRoman(num) {
+  const map = [
+    [1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],
+    [100,'C'],[90,'XC'],[50,'L'],[40,'XL'],
+    [10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']
+  ];
+  let r = '';
+  for (const [v, s] of map) { while (num >= v) { r += s; num -= v; } }
+  return r || '—';
+}
+
+function formatMcap(n) {
+  if (n >= 1e9) return '$' + (n/1e9).toFixed(2) + 'B';
+  if (n >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
+  if (n >= 1e3) return '$' + (n/1e3).toFixed(1) + 'K';
+  return '$' + Math.round(n).toLocaleString();
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+function epochOf(t) { return 1 + (t.history ? t.history.length : 0); }
+
+/* ============================================================
+   RENDER · main list
+   ============================================================ */
+function renderList() {
+  const list = document.getElementById('list');
+  list.innerHTML = travellers.map((t, i) => {
+    const epoch = epochOf(t);
+    const canOpen = epoch > 1;
+    const roman = toRoman(epoch);
+    return `
+      <article class="entry">
+        <div class="entry-body">
+          <div class="entry-head">
+            <div class="avatar" aria-hidden="true">${escapeHtml(t.avatar)}</div>
+            <div class="entry-head-text">
+              <div class="label">Traveller</div>
+              <div class="entry-name">${escapeHtml(t.name)}</div>
+              <div class="label">Inscribed</div>
+              <div class="entry-date">${escapeHtml(t.inscribed)}</div>
+            </div>
+          </div>
+          <div class="entry-grid">
+            <div class="coin-block">
+              <div class="label">Coin</div>
+              <div class="coin">${escapeHtml(t.coin)}</div>
+            </div>
+            <div class="fortune-block">
+              <div class="label">Fortune</div>
+              <div class="fortune">${formatMcap(t.fortune)}</div>
+            </div>
+            <div class="epoch-block">
+              <div class="label">Epoch</div>
+              <button class="seal ${canOpen ? 'clickable' : 'spent'}"
+                      type="button"
+                      ${canOpen
+                        ? `onclick="openDetail(${i})" aria-label="View past hoards of ${escapeHtml(t.name)}"`
+                        : 'disabled aria-label="No past hoards"'}>
+                ${roman}
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+/* ============================================================
+   RENDER · detail screen
+   ============================================================ */
+function openDetail(index) {
+  const t = travellers[index];
+  if (!t || !t.history || t.history.length === 0) return;
+
+  document.getElementById('detail-name').textContent = t.name;
+
+  const history = document.getElementById('history');
+  // Show newest first (most recent past hoard at top)
+  const ordered = t.history.slice().reverse();
+  history.innerHTML = ordered.map(h => {
+    const pct = ((h.faded - h.forged) / h.forged) * 100;
+    const gain = pct >= 0;
+    const pctStr = (gain ? '+' : '') + pct.toFixed(1) + '%';
+    return `
+      <article class="hoard">
+        <div class="hoard-inner">
+          <div class="hoard-name">${escapeHtml(h.name)}</div>
+          <div class="hoard-row">
+            <div>
+              <div class="label">Fortune Forged</div>
+              <div class="value">${formatMcap(h.forged)}</div>
+            </div>
+            <div>
+              <div class="label">Fortune Faded</div>
+              <div class="value">${formatMcap(h.faded)}</div>
+            </div>
+          </div>
+          <div class="spoils-row">
+            <div class="label">Spoils</div>
+            <div class="spoils ${gain ? 'gain' : 'loss'}">${pctStr}</div>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  document.getElementById('screen-main').hidden = true;
+  document.getElementById('screen-detail').hidden = false;
+  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+
+  if (location.hash !== '#t' + index) {
+    history.dataset.index = String(index);
+    history_pushHash('#t' + index);
+  }
+}
+
+function closeDetail() {
+  document.getElementById('screen-detail').hidden = true;
+  document.getElementById('screen-main').hidden = false;
+  if (location.hash) history_pushHash('');
+  window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+}
+
+// Avoid clobbering the global "history" object — wrap pushState
+function history_pushHash(hash) {
+  const url = location.pathname + location.search + (hash || '');
+  window.history.pushState({}, '', url);
+}
+
+window.addEventListener('popstate', () => {
+  const m = location.hash.match(/^#t(\d+)$/);
+  if (m) {
+    const idx = parseInt(m[1], 10);
+    if (travellers[idx]) { openDetail(idx); return; }
+  }
+  closeDetail();
+});
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+renderList();
+// Deep-link support: #t3 → opens traveller index 3
+const m = location.hash.match(/^#t(\d+)$/);
+if (m) {
+  const idx = parseInt(m[1], 10);
+  if (travellers[idx] && epochOf(travellers[idx]) > 1) openDetail(idx);
+}
+
+// Expose for live edits in console
+window.travellers = travellers;
+window.renderList = renderList;
+</script>
+
+</body>
+</html>
