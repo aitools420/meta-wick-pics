@@ -878,6 +878,18 @@ const travellers = [
       { name: "GRIM", forged:  90_000, faded: 1_100_000 },
       { name: "TOME", forged: 220_000, faded:   140_000 }
     ]
+  },
+  {
+    section: "pesantry",
+    name: "Brother Trade",
+    nameLink: "https://x.com/tradebrah",
+    avatar: "🤝",
+    inscribed: "Day XVIII, May 2026",
+    coin: "?",
+    // coinLink: tbd — set once the held coin is known
+    fortune: null,
+    fortuneLive: false,
+    history: []
   }
 ];
 
@@ -936,9 +948,14 @@ function entryParts(t, i) {
   const coinHtml = t.coinLink
     ? `<a class="coin" href="${escapeHtml(t.coinLink)}" target="_blank" rel="noopener" aria-label="${escapeHtml(t.coin)} on DexScreener">${escapeHtml(t.coin)}</a>`
     : `<div class="coin">${escapeHtml(t.coin)}</div>`;
-  const fortuneHtml = (t.fortune == null)
-    ? `<div class="fortune loading" data-fortune-cell="${i}">…</div>`
-    : `<div class="fortune" data-fortune-cell="${i}">${formatMcap(t.fortune)}</div>`;
+  let fortuneHtml;
+  if (t.fortune != null) {
+    fortuneHtml = `<div class="fortune" data-fortune-cell="${i}">${formatMcap(t.fortune)}</div>`;
+  } else if (t.fortuneLive) {
+    fortuneHtml = `<div class="fortune loading" data-fortune-cell="${i}">…</div>`;
+  } else {
+    fortuneHtml = `<div class="fortune loading" data-fortune-cell="${i}">—</div>`;
+  }
   const hue = sealHue(epoch).toFixed(1);
   const sealHtml = `<button class="seal${canOpen ? ' clickable' : ''}"
                             type="button"
