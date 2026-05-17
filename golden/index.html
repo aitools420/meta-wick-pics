@@ -847,6 +847,14 @@ footer .disclaimer {
   .fortune-col { width: 78px; }
 }
 
+/* Mobile: drop the Epoch wax-seal from the single-row layout to
+   reclaim ~50px of horizontal space for the name + date column.
+   Stacked-layout entries (their seal lives in .epoch-block, not
+   inside .entry-row) keep theirs. */
+@media (max-width: 600px) {
+  .entry-row .seal { display: none; }
+}
+
 /* Larger screens — desktop view */
 @media (min-width: 760px) {
   body { padding: 36px 16px 60px; }
