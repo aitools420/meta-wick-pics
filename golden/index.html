@@ -298,6 +298,7 @@ body::before {
   flex-shrink: 0;
   width: 44px; height: 44px;
   border-radius: 50%;
+  overflow: hidden;
   background:
     radial-gradient(circle at 30% 30%, #6b4226 0%, #3d2410 70%, #2a1810 100%);
   box-shadow:
@@ -316,6 +317,8 @@ body::before {
 a.avatar { cursor: pointer; transition: transform 0.15s, filter 0.15s; }
 a.avatar:hover { transform: scale(1.06) rotate(-3deg); filter: brightness(1.15); }
 a.avatar:active { transform: scale(0.97); }
+.avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.avatar-fallback { display: none; }
 .entry-name {
   font-family: 'Cinzel Decorative', serif;
   font-weight: 700;
@@ -876,13 +879,24 @@ const travellers = [
     section: "crowned",
     name: "Ser Tangent",
     nameLink: "https://x.com/OG_TAngent",
-    avatar: "🦁",
+    avatar: "🐺",         // wolf-dog face — fallback when unavatar 404s
     inscribed: "Day XVIII, May 2026",
     coin: "WICK",
     coinLink: "https://dexscreener.com/pulsechain/" + WICK_CA,
     fortune: null,        // filled live from DexScreener
     fortuneLive: true,
     history: []           // Epoch I — no past hoards
+  },
+  {
+    section: "crowned",
+    name: "Tha Famous",
+    nameLink: "https://x.com/ThaFamousOG",
+    avatar: "👑",         // crown for the famous; fallback if unavatar 404s
+    inscribed: "Day XVIII, May 2026",
+    coin: "?",
+    fortune: null,
+    fortuneLive: false,
+    history: []
   },
   {
     section: "pesantry",
@@ -942,6 +956,18 @@ function escapeHtml(s) {
 
 function epochOf(t) { return 1 + (t.history ? t.history.length : 0); }
 
+// Pull an X / Twitter handle out of a full profile URL (or pass through
+// a bare handle). Returns null if no handle could be derived.
+function extractXHandle(input) {
+  if (!input) return null;
+  const s = String(input).trim();
+  if (!s.includes('/') && !s.includes('.')) {
+    return s.replace(/^@/, '').replace(/[^A-Za-z0-9_]/g, '') || null;
+  }
+  const m = s.match(/(?:twitter\.com|x\.com)\/(@?[A-Za-z0-9_]+)/i);
+  return m ? m[1].replace('@', '') : null;
+}
+
 // Epoch 1 → 120° (green), 10 → 0° (red); clamped on either side.
 // Smooth sweep through yellow (≈60°) + orange (≈30°) for in-between epochs.
 function sealHue(epoch) {
@@ -957,9 +983,20 @@ function entryParts(t, i) {
   const canOpen = epoch > 1;
   const roman = toRoman(epoch);
   const avatarLink = t.avatarLink || t.nameLink || null;
+  const handle = extractXHandle(t.xHandle || avatarLink);
+  const fallbackEmoji = escapeHtml(t.avatar);
+  const avatarInner = handle
+    ? `<img class="avatar-img"
+            src="https://unavatar.io/x/${escapeHtml(handle)}"
+            alt=""
+            referrerpolicy="no-referrer"
+            loading="lazy"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+       <span class="avatar-fallback">${fallbackEmoji}</span>`
+    : fallbackEmoji;
   const avatarHtml = avatarLink
-    ? `<a class="avatar" href="${escapeHtml(avatarLink)}" target="_blank" rel="noopener" aria-label="${escapeHtml(t.name)} on X">${escapeHtml(t.avatar)}</a>`
-    : `<div class="avatar" aria-hidden="true">${escapeHtml(t.avatar)}</div>`;
+    ? `<a class="avatar" href="${escapeHtml(avatarLink)}" target="_blank" rel="noopener" aria-label="${escapeHtml(t.name)} on X">${avatarInner}</a>`
+    : `<div class="avatar" aria-hidden="true">${avatarInner}</div>`;
   const nameTag = t.nameLink ? 'a' : 'span';
   const nameAttrs = t.nameLink
     ? ` href="${escapeHtml(t.nameLink)}" target="_blank" rel="noopener"`
