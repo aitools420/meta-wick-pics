@@ -286,6 +286,81 @@ a.entry-name:hover { color: #8a5a08; text-shadow: 0 0 6px rgba(255,180,40,0.5), 
   margin-bottom: 2px;
 }
 
+/* ============================================================
+   STACKED LAYOUT · the original (pre-single-row) entry format
+   Opt-in via traveller.layout = 'stacked'. Vertical: head row
+   (avatar + name + date) sits above a coin / fortune / seal grid.
+   ============================================================ */
+.entry.stacked .entry-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1.5px dashed rgba(120,70,20,0.4);
+  margin-bottom: 14px;
+}
+.entry.stacked .avatar { width: 58px; height: 58px; font-size: 30px; }
+.entry.stacked .entry-head-text { flex: 1; min-width: 0; }
+.entry.stacked .entry-head-text .label { margin-top: 2px; }
+.entry.stacked .entry-head-text .label:first-child { margin-top: 0; }
+.entry.stacked .entry-name {
+  font-size: clamp(16px, 4.6vw, 20px);
+  line-height: 1.15;
+  white-space: normal;
+  text-overflow: clip;
+  overflow: visible;
+}
+.entry.stacked .entry-date {
+  font-size: clamp(12px, 3.6vw, 14px);
+  white-space: normal;
+  text-overflow: clip;
+  overflow: visible;
+}
+.entry.stacked .entry-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+}
+.entry.stacked .coin-block,
+.entry.stacked .fortune-block,
+.entry.stacked .epoch-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.entry.stacked .fortune-block { align-items: flex-start; padding-left: 6px; }
+.entry.stacked .fortune-block .label { align-self: flex-start; }
+.entry.stacked .coin {
+  width: 84px; height: 84px; font-size: 17px; letter-spacing: 0.04em;
+  box-shadow:
+    inset 0 -4px 8px rgba(80,40,0,0.55),
+    inset 0 4px 8px rgba(255,250,200,0.55),
+    inset 0 0 0 3px #b07710,
+    inset 0 0 0 4px #6b3a08,
+    0 0 0 1.5px var(--gold-dark),
+    0 0 14px rgba(255,180,40,0.55),
+    0 6px 12px rgba(0,0,0,0.5);
+}
+.entry.stacked .coin::before { top: 6px; font-size: 8px; }
+.entry.stacked .coin::after  { bottom: 6px; font-size: 8px; }
+.entry.stacked .fortune { font-size: clamp(22px, 6vw, 28px); }
+.entry.stacked .seal { width: 64px; height: 64px; font-size: 16px; letter-spacing: 0.08em; }
+@media (max-width: 380px) {
+  .entry.stacked .entry-body { padding: 14px 12px 16px; }
+  .entry.stacked .avatar { width: 50px; height: 50px; font-size: 26px; }
+  .entry.stacked .coin { width: 72px; height: 72px; font-size: 15px; }
+  .entry.stacked .seal { width: 56px; height: 56px; font-size: 15px; }
+  .entry.stacked .entry-grid { gap: 10px; }
+}
+@media (min-width: 760px) {
+  .entry.stacked .entry-body { padding: 18px 22px 20px; }
+  .entry.stacked .avatar { width: 64px; height: 64px; font-size: 32px; }
+  .entry.stacked .coin { width: 96px; height: 96px; font-size: 19px; }
+  .entry.stacked .seal { width: 72px; height: 72px; font-size: 18px; }
+}
+
 /* The Coin — glowing embossed gold disc */
 .coin {
   width: 56px; height: 56px;
@@ -700,7 +775,7 @@ footer a:hover { color: var(--gold-light); }
 </section>
 
 <footer>
-  <div>Inscribed by the keepers of <a href="https://meta.wick.pics/">meta.wick.pics</a></div>
+  <div>Inscribed by the keeper of <a href="https://meta.wick.pics/">wick pics</a></div>
 </footer>
 
 <script>
@@ -710,6 +785,7 @@ footer a:hover { color: var(--gold-light); }
    the wax-seal button clickable to open the past-hoards screen.
    ============================================================ */
 const WICK_CA = "0x8CDaf3d630Da9E1450832924D5701CC0500E9cfC";
+const HEX_CA  = "0x2b591e99afe9F32eAA6214f7B7629768c40Eeb39";
 
 const travellers = [
   {
@@ -722,6 +798,20 @@ const travellers = [
     fortune: null,        // filled live from DexScreener
     fortuneLive: true,
     history: []           // Epoch I — no past hoards
+  },
+  {
+    layout: "stacked",     // ← old vertical format
+    name: "Sage Therion the Wise",
+    avatar: "🌙",
+    inscribed: "Day VII, Moon of Embers",
+    coin: "HEX",
+    coinLink: "https://dexscreener.com/pulsechain/" + HEX_CA,
+    fortune: null,
+    fortuneLive: true,
+    history: [
+      { name: "GRIM", forged:  90_000, faded: 1_100_000 },
+      { name: "TOME", forged: 220_000, faded:   140_000 }
+    ]
   }
 ];
 
@@ -755,46 +845,89 @@ function escapeHtml(s) {
 function epochOf(t) { return 1 + (t.history ? t.history.length : 0); }
 
 /* ============================================================
-   RENDER · main list (single-row layout per entry)
+   RENDER · main list (single-row default, stacked = old format)
    ============================================================ */
-function renderList() {
-  const list = document.getElementById('list');
-  list.innerHTML = travellers.map((t, i) => {
-    const epoch = epochOf(t);
-    const canOpen = epoch > 1;
-    const roman = toRoman(epoch);
-    const nameHtml = t.nameLink
-      ? `<a class="entry-name" href="${escapeHtml(t.nameLink)}" target="_blank" rel="noopener">${escapeHtml(t.name)}</a>`
-      : `<span class="entry-name">${escapeHtml(t.name)}</span>`;
-    const coinHtml = t.coinLink
-      ? `<a class="coin" href="${escapeHtml(t.coinLink)}" target="_blank" rel="noopener" aria-label="${escapeHtml(t.coin)} on DexScreener">${escapeHtml(t.coin)}</a>`
-      : `<div class="coin">${escapeHtml(t.coin)}</div>`;
-    const fortuneHtml = (t.fortune == null)
-      ? `<div class="fortune loading" data-fortune-cell="${i}">…</div>`
-      : `<div class="fortune" data-fortune-cell="${i}">${formatMcap(t.fortune)}</div>`;
-    return `
-      <article class="entry">
-        <div class="entry-body">
-          <div class="entry-row">
-            <div class="avatar" aria-hidden="true">${escapeHtml(t.avatar)}</div>
-            <div class="entry-text">
-              ${nameHtml}
-              <span class="entry-date">${escapeHtml(t.inscribed)}</span>
-            </div>
-            ${coinHtml}
-            ${fortuneHtml}
-            <button class="seal ${canOpen ? 'clickable' : 'spent'}"
-                    type="button"
-                    ${canOpen
-                      ? `onclick="openDetail(${i})" aria-label="View past hoards of ${escapeHtml(t.name)}"`
-                      : 'disabled aria-label="No past hoards yet"'}>
-              ${roman}
-            </button>
+function entryParts(t, i) {
+  const epoch = epochOf(t);
+  const canOpen = epoch > 1;
+  const roman = toRoman(epoch);
+  const nameTag = t.nameLink ? 'a' : 'span';
+  const nameAttrs = t.nameLink
+    ? ` href="${escapeHtml(t.nameLink)}" target="_blank" rel="noopener"`
+    : '';
+  const nameHtml = `<${nameTag} class="entry-name"${nameAttrs}>${escapeHtml(t.name)}</${nameTag}>`;
+  const coinHtml = t.coinLink
+    ? `<a class="coin" href="${escapeHtml(t.coinLink)}" target="_blank" rel="noopener" aria-label="${escapeHtml(t.coin)} on DexScreener">${escapeHtml(t.coin)}</a>`
+    : `<div class="coin">${escapeHtml(t.coin)}</div>`;
+  const fortuneHtml = (t.fortune == null)
+    ? `<div class="fortune loading" data-fortune-cell="${i}">…</div>`
+    : `<div class="fortune" data-fortune-cell="${i}">${formatMcap(t.fortune)}</div>`;
+  const sealHtml = `<button class="seal ${canOpen ? 'clickable' : 'spent'}"
+                            type="button"
+                            ${canOpen
+                              ? `onclick="openDetail(${i})" aria-label="View past hoards of ${escapeHtml(t.name)}"`
+                              : 'disabled aria-label="No past hoards yet"'}>${roman}</button>`;
+  return { nameHtml, coinHtml, fortuneHtml, sealHtml };
+}
+
+function renderEntryRow(t, i) {
+  const { nameHtml, coinHtml, fortuneHtml, sealHtml } = entryParts(t, i);
+  return `
+    <article class="entry">
+      <div class="entry-body">
+        <div class="entry-row">
+          <div class="avatar" aria-hidden="true">${escapeHtml(t.avatar)}</div>
+          <div class="entry-text">
+            ${nameHtml}
+            <span class="entry-date">${escapeHtml(t.inscribed)}</span>
+          </div>
+          ${coinHtml}
+          ${fortuneHtml}
+          ${sealHtml}
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function renderEntryStacked(t, i) {
+  const { nameHtml, coinHtml, fortuneHtml, sealHtml } = entryParts(t, i);
+  return `
+    <article class="entry stacked">
+      <div class="entry-body">
+        <div class="entry-head">
+          <div class="avatar" aria-hidden="true">${escapeHtml(t.avatar)}</div>
+          <div class="entry-head-text">
+            <div class="label">Traveller</div>
+            ${nameHtml}
+            <div class="label">Inscribed</div>
+            <div class="entry-date">${escapeHtml(t.inscribed)}</div>
           </div>
         </div>
-      </article>
-    `;
-  }).join('');
+        <div class="entry-grid">
+          <div class="coin-block">
+            <div class="label">Coin</div>
+            ${coinHtml}
+          </div>
+          <div class="fortune-block">
+            <div class="label">Fortune</div>
+            ${fortuneHtml}
+          </div>
+          <div class="epoch-block">
+            <div class="label">Epoch</div>
+            ${sealHtml}
+          </div>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function renderList() {
+  const list = document.getElementById('list');
+  list.innerHTML = travellers.map((t, i) =>
+    t.layout === 'stacked' ? renderEntryStacked(t, i) : renderEntryRow(t, i)
+  ).join('');
 }
 
 /* ============================================================
