@@ -471,12 +471,33 @@ a.coin:active { transform: scale(0.97); }
 }
 
 /* Fortune — bold market cap, polished gold-on-black ingot plate */
-.fortune {
-  position: relative;
-  isolation: isolate;
+/* Row layout label + plate stack (single-row entries only) */
+.fortune-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+/* Fortune plate — chunky black "ingot" rectangle that the gold text sits in */
+.fortune-plate {
   display: inline-block;
   padding: 4px 10px 5px;
   border-radius: 5px;
+  background: linear-gradient(180deg, #1a1208 0%, #0a0604 55%, #050302 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,200,80,0.35),
+    inset 0 -1px 0 rgba(0,0,0,0.85),
+    inset 0 0 0 1px rgba(180,120,20,0.55),
+    0 0 0 1px rgba(0,0,0,0.6),
+    0 2px 6px rgba(0,0,0,0.55);
+  line-height: 1;
+  white-space: nowrap;
+}
+/* Fortune — polished gold gradient text inside the plate */
+.fortune {
+  display: inline-block;
   font-family: 'Cinzel Decorative', serif;
   font-weight: 900;
   font-size: clamp(14px, 4vw, 18px);
@@ -490,36 +511,22 @@ a.coin:active { transform: scale(0.97); }
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  /* Fallback so the number is visible if a browser ignores background-clip:text */
+  color: #f0b937;
   filter:
-    drop-shadow(0 1px 0 rgba(255,250,200,0.55))
-    drop-shadow(0 1px 1px rgba(0,0,0,0.7))
-    drop-shadow(0 0 6px rgba(255,180,40,0.55));
+    drop-shadow(0 1px 0 rgba(255,250,200,0.4))
+    drop-shadow(0 0 4px rgba(255,180,40,0.45));
   font-variant-numeric: tabular-nums;
   line-height: 1.1;
   white-space: nowrap;
 }
-.fortune::before {
-  /* black ingot plate behind the gold text */
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: 5px;
-  background: linear-gradient(180deg, #1a1208 0%, #0a0604 55%, #050302 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255,200,80,0.35),
-    inset 0 -1px 0 rgba(0,0,0,0.85),
-    inset 0 0 0 1px rgba(180,120,20,0.55),
-    0 0 0 1px rgba(0,0,0,0.6),
-    0 2px 6px rgba(0,0,0,0.55);
-}
 .fortune.loading {
-  -webkit-text-fill-color: rgba(240,210,150,0.7);
   background: none;
+  -webkit-text-fill-color: rgba(240,210,150,0.75);
+  color: rgba(240,210,150,0.75);
   filter: none;
   font-style: italic;
   font-size: clamp(12px, 3.4vw, 14px);
-  opacity: 0.9;
 }
 
 /* Wax seal · Roman numeral Epoch button
@@ -912,21 +919,6 @@ const travellers = [
   },
   {
     section: "pesantry",
-    layout: "stacked",     // ← old vertical format
-    name: "Sage Therion the Wise",
-    avatar: "🌙",
-    inscribed: "Day VII, Moon of Embers",
-    coin: "HEX",
-    coinLink: "https://dexscreener.com/pulsechain/" + HEX_CA,
-    fortune: null,
-    fortuneLive: true,
-    history: [
-      { name: "GRIM", forged:  90_000, faded: 1_100_000 },
-      { name: "TOME", forged: 220_000, faded:   140_000 }
-    ]
-  },
-  {
-    section: "pesantry",
     name: "Brother Trade",
     nameLink: "https://x.com/tradebrah",
     avatar: "🤝",
@@ -942,7 +934,7 @@ const travellers = [
      Fictional placeholders showing every seal hue. Delete or move
      once real travellers populate each epoch. */
   {
-    section: "test", layout: "stacked",
+    section: "test",
     name: "Brunhilde Stormfist", avatar: "⚔️",
     inscribed: "Day V, Moon of Forge",
     coin: "ORCS", fortune: 324_000,
@@ -951,7 +943,7 @@ const travellers = [
     ]
   },
   {
-    section: "test", layout: "stacked",
+    section: "test",
     name: "The Whispering Skald", avatar: "🪶",
     inscribed: "Day XX, Crimson Moon",
     coin: "FROG", fortune: 1_180_000,
@@ -961,7 +953,7 @@ const travellers = [
     ]
   },
   {
-    section: "test", layout: "stacked",
+    section: "test",
     name: "Cassian Nightmist", avatar: "🗡️",
     inscribed: "Day VIII, Velvet Moon",
     coin: "SHRD", fortune: 14_520_000,
@@ -972,7 +964,7 @@ const travellers = [
     ]
   },
   {
-    section: "test", layout: "stacked",
+    section: "test",
     name: "Lyra Faewhisper", avatar: "⭐",
     inscribed: "Dawn, 1st of Verdant",
     coin: "DRYAD", fortune: 2_130_000,
@@ -984,7 +976,7 @@ const travellers = [
     ]
   },
   {
-    section: "test", layout: "stacked",
+    section: "test",
     name: "The Iron Bard", avatar: "⚒️",
     inscribed: "Last Bell, 11th of Hollow",
     coin: "ANVL", fortune: 880_000,
@@ -997,7 +989,7 @@ const travellers = [
     ]
   },
   {
-    section: "test", layout: "stacked",
+    section: "test",
     name: "Ser Aldric Goldhand", avatar: "🦁",
     inscribed: "Day XII, Moon of Ash, AC 1247",
     coin: "DRGN", fortune: 4_200_000,
@@ -1011,7 +1003,7 @@ const travellers = [
     ]
   },
   {
-    section: "test", layout: "stacked",
+    section: "test",
     name: "The Crimson Bandit", avatar: "🛡️",
     inscribed: "Midnight, 28th of Frost",
     coin: "STAB", fortune: 640_000,
@@ -1026,7 +1018,7 @@ const travellers = [
     ]
   },
   {
-    section: "test", layout: "stacked",
+    section: "test",
     name: "Lady Mireille Emberhall", avatar: "🔥",
     inscribed: "Eve of Iron Tide, AC 1247",
     coin: "EMBR", fortune: 69_410_000,
@@ -1042,7 +1034,7 @@ const travellers = [
     ]
   },
   {
-    section: "test", layout: "stacked",
+    section: "test",
     name: "The Grand Sovereign", avatar: "👑",
     inscribed: "Day I of the First Sun, AC MMXLVII",
     coin: "KING", fortune: 128_000_000,
@@ -1056,6 +1048,21 @@ const travellers = [
       { name: "RUNE", forged:   860_000, faded: 5_400_000 },
       { name: "SHRD", forged: 1_400_000, faded:   320_000 },
       { name: "WARD", forged: 3_100_000, faded:18_000_000 }
+    ]
+  },
+  {
+    section: "test",
+    layout: "stacked",     // dual-line format demo, at the bottom of the tourney
+    name: "Sage Therion the Wise",
+    avatar: "🌙",
+    inscribed: "Day VII, Moon of Embers",
+    coin: "HEX",
+    coinLink: "https://dexscreener.com/pulsechain/" + HEX_CA,
+    fortune: null,
+    fortuneLive: true,
+    history: [
+      { name: "GRIM", forged:  90_000, faded: 1_100_000 },
+      { name: "TOME", forged: 220_000, faded:   140_000 }
     ]
   }
 ];
@@ -1138,14 +1145,15 @@ function entryParts(t, i) {
   const coinHtml = t.coinLink
     ? `<a class="coin" href="${escapeHtml(t.coinLink)}" target="_blank" rel="noopener" aria-label="${escapeHtml(t.coin)} on DexScreener">${escapeHtml(t.coin)}</a>`
     : `<div class="coin">${escapeHtml(t.coin)}</div>`;
-  let fortuneHtml;
+  let fortuneInner;
   if (t.fortune != null) {
-    fortuneHtml = `<div class="fortune" data-fortune-cell="${i}">${formatMcap(t.fortune)}</div>`;
+    fortuneInner = `<span class="fortune" data-fortune-cell="${i}">${formatMcap(t.fortune)}</span>`;
   } else if (t.fortuneLive) {
-    fortuneHtml = `<div class="fortune loading" data-fortune-cell="${i}">…</div>`;
+    fortuneInner = `<span class="fortune loading" data-fortune-cell="${i}">…</span>`;
   } else {
-    fortuneHtml = `<div class="fortune loading" data-fortune-cell="${i}">—</div>`;
+    fortuneInner = `<span class="fortune loading" data-fortune-cell="${i}">—</span>`;
   }
+  const fortuneHtml = `<div class="fortune-plate">${fortuneInner}</div>`;
   const hue = sealHue(epoch).toFixed(1);
   const sealHtml = `<button class="seal${canOpen ? ' clickable' : ''}"
                             type="button"
@@ -1170,7 +1178,10 @@ function renderEntryRow(t, i) {
             <span class="entry-date">${escapeHtml(t.inscribed)}</span>
           </div>
           ${coinHtml}
-          ${fortuneHtml}
+          <div class="fortune-col">
+            <div class="label">Fortune</div>
+            ${fortuneHtml}
+          </div>
           ${sealHtml}
         </div>
       </div>
