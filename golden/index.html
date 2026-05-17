@@ -182,9 +182,66 @@ body::before {
 }
 
 /* ============================================================
+   LIST SECTION · grouping (Crowned Crumpets, etc.)
+   ============================================================ */
+.list-section { margin: 0 0 28px; }
+.list-section:last-child { margin-bottom: 0; }
+
+.section-banner {
+  display: block;
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 14px;
+  padding: 10px 26px 12px;
+  text-align: center;
+  background: linear-gradient(180deg, #6b3a17 0%, #4a2410 55%, #3d1f0d 100%);
+  border-radius: 6px;
+  box-shadow:
+    inset 0 2px 4px rgba(255,200,100,0.20),
+    inset 0 -3px 6px rgba(0,0,0,0.6),
+    0 0 0 1.5px var(--gold-dark),
+    0 0 0 3px var(--gold-deep),
+    0 0 0 4.5px var(--gold-dark),
+    0 0 18px rgba(255,170,60,0.18),
+    0 6px 14px rgba(0,0,0,0.55);
+  position: relative;
+}
+.section-banner::before, .section-banner::after {
+  /* iron rivets */
+  content: '';
+  position: absolute;
+  top: 50%; transform: translateY(-50%);
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #94a3b8 0%, #475569 60%, #1e293b 100%);
+  box-shadow: inset 0 -1px 2px rgba(0,0,0,0.5), 0 0 0 1px #0a0f1a;
+}
+.section-banner::before { left: 8px; }
+.section-banner::after  { right: 8px; }
+.section-banner h2 {
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 900;
+  font-size: clamp(15px, 4.4vw, 21px);
+  letter-spacing: 0.06em;
+  color: var(--gold-light);
+  text-shadow: 0 2px 4px rgba(0,0,0,0.85), 0 0 8px rgba(255,180,40,0.28);
+  margin: 0;
+}
+
+.entries-empty {
+  text-align: center;
+  font-family: 'IM Fell English', serif;
+  font-style: italic;
+  font-size: clamp(13px, 3.6vw, 15px);
+  color: var(--ink-dim);
+  padding: 18px 8px;
+}
+
+/* ============================================================
    ENTRY CARD · each traveller row
    ============================================================ */
-#list, #history { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 18px; }
+.entries, #history { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 18px; }
 
 .entry {
   position: relative;
@@ -746,11 +803,7 @@ footer a:hover { color: var(--gold-light); }
     <div class="subtitle">A ledger of bold travellers and the fortunes they ride</div>
   </header>
 
-  <div class="parchment">
-    <div class="parchment-inner">
-      <div id="list"></div>
-    </div>
-  </div>
+  <div id="sections"></div>
 </section>
 
 <!-- ============================================================
@@ -787,8 +840,16 @@ footer a:hover { color: var(--gold-light); }
 const WICK_CA = "0x8CDaf3d630Da9E1450832924D5701CC0500E9cfC";
 const HEX_CA  = "0x2b591e99afe9F32eAA6214f7B7629768c40Eeb39";
 
+// Section list (rendered top-to-bottom). Each traveller declares which
+// section it belongs to via its `section` key.
+const sections = [
+  { key: "crowned",   title: "Crowned Crumpets"     },
+  { key: "pesantry",  title: "PulseChain Pesantry"  }
+];
+
 const travellers = [
   {
+    section: "crowned",
     name: "Ser Tangent",
     nameLink: "https://x.com/OG_TAngent",
     avatar: "🦁",
@@ -800,6 +861,7 @@ const travellers = [
     history: []           // Epoch I — no past hoards
   },
   {
+    section: "pesantry",
     layout: "stacked",     // ← old vertical format
     name: "Sage Therion the Wise",
     avatar: "🌙",
@@ -933,11 +995,31 @@ function renderEntryStacked(t, i) {
   `;
 }
 
-function renderList() {
-  const list = document.getElementById('list');
-  list.innerHTML = travellers.map((t, i) =>
+function renderEntries(sectionKey) {
+  // Preserve the flat travellers index so openDetail(i) still works.
+  const rows = travellers
+    .map((t, i) => ({ t, i }))
+    .filter(({ t }) => (t.section || sections[0].key) === sectionKey);
+  if (!rows.length) {
+    return `<div class="entries-empty">No travellers in this list yet.</div>`;
+  }
+  return `<div class="entries">` + rows.map(({ t, i }) =>
     t.layout === 'stacked' ? renderEntryStacked(t, i) : renderEntryRow(t, i)
-  ).join('');
+  ).join('') + `</div>`;
+}
+
+function renderList() {
+  const root = document.getElementById('sections');
+  root.innerHTML = sections.map(s => `
+    <div class="list-section">
+      <div class="section-banner"><h2>${escapeHtml(s.title)}</h2></div>
+      <div class="parchment">
+        <div class="parchment-inner">
+          ${renderEntries(s.key)}
+        </div>
+      </div>
+    </div>
+  `).join('');
 }
 
 /* ============================================================
