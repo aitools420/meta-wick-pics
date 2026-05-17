@@ -926,6 +926,18 @@ const sections = [
 const travellers = [
   {
     section: "crowned",
+    pinTop: true,         // always lock to the top of the Crowned Crumpets list
+    name: "King Crumpet",
+    nameLink: "https://x.com/chippyfishdish",
+    avatar: "🫅",         // crowned royal fallback if unavatar 404s
+    inscribed: "Day XVIII, May 2026",
+    coin: "?",
+    fortune: null,
+    fortuneLive: false,
+    history: []
+  },
+  {
+    section: "crowned",
     name: "Ser Tangent",
     nameLink: "https://x.com/OG_TAngent",
     avatar: "🐺",         // wolf-dog face — fallback when unavatar 404s
@@ -1363,11 +1375,14 @@ function renderEntries(sectionKey) {
   const rows = travellers
     .map((t, i) => ({ t, i }))
     .filter(({ t }) => (t.section || sections[0].key) === sectionKey);
-  // Sort by current fortune, highest → lowest. Travellers whose fortune
-  // is still null (live entries pre-hydration, or placeholders) sink to
-  // the bottom; once the live fetch resolves, renderList re-runs and
-  // they slot into their correct rank.
+  // Sort: pinTop entries first (always top of section), then by current
+  // fortune highest → lowest. Null fortunes sink to the bottom; once
+  // hydrateLiveFortunes resolves them, renderList re-runs and they
+  // slot into their correct rank.
   rows.sort((a, b) => {
+    const pa = a.t.pinTop ? 1 : 0;
+    const pb = b.t.pinTop ? 1 : 0;
+    if (pa !== pb) return pb - pa;
     const fa = (typeof a.t.fortune === 'number') ? a.t.fortune : -Infinity;
     const fb = (typeof b.t.fortune === 'number') ? b.t.fortune : -Infinity;
     return fb - fa;
