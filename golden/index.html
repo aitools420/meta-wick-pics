@@ -455,6 +455,24 @@ a.entry-name:hover { color: #8a5a08; text-shadow: 0 0 6px rgba(255,180,40,0.5), 
 a.coin { cursor: pointer; transition: transform 0.15s, filter 0.15s; }
 a.coin:hover { transform: scale(1.06) rotate(-3deg); filter: brightness(1.1); }
 a.coin:active { transform: scale(0.97); }
+
+/* Length-aware ticker sizing — shrink the text on longer tickers so
+   it fits cleanly inside the gold disc. Tuned per breakpoint /
+   per layout (stacked discs are larger so the reduction is gentler). */
+.coin[data-len="6"]              { font-size: 11px; letter-spacing: 0; }
+.coin[data-len="7"]              { font-size: 10px; letter-spacing: -0.01em; }
+.entry.stacked .coin[data-len="6"] { font-size: 14px; letter-spacing: 0.02em; }
+.entry.stacked .coin[data-len="7"] { font-size: 13px; letter-spacing: 0; }
+@media (max-width: 380px) {
+  .coin[data-len="6"]            { font-size: 9px; }
+  .coin[data-len="7"]            { font-size: 8.5px; }
+}
+@media (min-width: 760px) {
+  .coin[data-len="6"]            { font-size: 13px; }
+  .coin[data-len="7"]            { font-size: 12px; }
+  .entry.stacked .coin[data-len="6"] { font-size: 16px; }
+  .entry.stacked .coin[data-len="7"] { font-size: 14px; }
+}
 .coin::before {
   content: '★';
   position: absolute; top: 3px; left: 50%; transform: translateX(-50%);
@@ -1148,9 +1166,10 @@ function entryParts(t, i) {
     ? ` href="${escapeHtml(t.nameLink)}" target="_blank" rel="noopener"`
     : '';
   const nameHtml = `<${nameTag} class="entry-name"${nameAttrs}>${escapeHtml(t.name)}</${nameTag}>`;
+  const coinLen = (t.coin || '').length;
   const coinHtml = t.coinLink
-    ? `<a class="coin" href="${escapeHtml(t.coinLink)}" target="_blank" rel="noopener" aria-label="${escapeHtml(t.coin)} on DexScreener">${escapeHtml(t.coin)}</a>`
-    : `<div class="coin">${escapeHtml(t.coin)}</div>`;
+    ? `<a class="coin" data-len="${coinLen}" href="${escapeHtml(t.coinLink)}" target="_blank" rel="noopener" aria-label="${escapeHtml(t.coin)} on DexScreener">${escapeHtml(t.coin)}</a>`
+    : `<div class="coin" data-len="${coinLen}">${escapeHtml(t.coin)}</div>`;
   let fortuneInner;
   if (t.fortune != null) {
     fortuneInner = `<span class="fortune" data-fortune-cell="${i}">${formatMcap(t.fortune)}</span>`;
