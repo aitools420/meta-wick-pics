@@ -311,7 +311,11 @@ body::before {
   display: flex; align-items: center; justify-content: center;
   font-size: 30px;
   line-height: 1;
+  text-decoration: none;
 }
+a.avatar { cursor: pointer; transition: transform 0.15s, filter 0.15s; }
+a.avatar:hover { transform: scale(1.06) rotate(-3deg); filter: brightness(1.15); }
+a.avatar:active { transform: scale(0.97); }
 .entry-name {
   font-family: 'Cinzel Decorative', serif;
   font-weight: 700;
@@ -920,6 +924,10 @@ function entryParts(t, i) {
   const epoch = epochOf(t);
   const canOpen = epoch > 1;
   const roman = toRoman(epoch);
+  const avatarLink = t.avatarLink || t.nameLink || null;
+  const avatarHtml = avatarLink
+    ? `<a class="avatar" href="${escapeHtml(avatarLink)}" target="_blank" rel="noopener" aria-label="${escapeHtml(t.name)} on X">${escapeHtml(t.avatar)}</a>`
+    : `<div class="avatar" aria-hidden="true">${escapeHtml(t.avatar)}</div>`;
   const nameTag = t.nameLink ? 'a' : 'span';
   const nameAttrs = t.nameLink
     ? ` href="${escapeHtml(t.nameLink)}" target="_blank" rel="noopener"`
@@ -938,16 +946,16 @@ function entryParts(t, i) {
                             ${canOpen
                               ? `onclick="openDetail(${i})" aria-label="View past hoards of ${escapeHtml(t.name)}"`
                               : 'disabled aria-label="No past hoards yet"'}>${roman}</button>`;
-  return { nameHtml, coinHtml, fortuneHtml, sealHtml };
+  return { avatarHtml, nameHtml, coinHtml, fortuneHtml, sealHtml };
 }
 
 function renderEntryRow(t, i) {
-  const { nameHtml, coinHtml, fortuneHtml, sealHtml } = entryParts(t, i);
+  const { avatarHtml, nameHtml, coinHtml, fortuneHtml, sealHtml } = entryParts(t, i);
   return `
     <article class="entry">
       <div class="entry-body">
         <div class="entry-row">
-          <div class="avatar" aria-hidden="true">${escapeHtml(t.avatar)}</div>
+          ${avatarHtml}
           <div class="entry-text">
             <div class="label">Traveller</div>
             ${nameHtml}
@@ -964,12 +972,12 @@ function renderEntryRow(t, i) {
 }
 
 function renderEntryStacked(t, i) {
-  const { nameHtml, coinHtml, fortuneHtml, sealHtml } = entryParts(t, i);
+  const { avatarHtml, nameHtml, coinHtml, fortuneHtml, sealHtml } = entryParts(t, i);
   return `
     <article class="entry stacked">
       <div class="entry-body">
         <div class="entry-head">
-          <div class="avatar" aria-hidden="true">${escapeHtml(t.avatar)}</div>
+          ${avatarHtml}
           <div class="entry-head-text">
             <div class="label">Traveller</div>
             ${nameHtml}
