@@ -1279,7 +1279,32 @@ function renderList() {
    LIVE FORTUNE · DexScreener marketCap lookup for tokens with
    `fortuneLive: true`. Picks the PulseChain pair with the most
    liquidity, prefers marketCap (circulating) over fdv.
+
+   Cached in localStorage per-CA for 1 hour so repeat visits in
+   the same browser skip the DS fetch entirely.
    ============================================================ */
+const MCAP_CACHE_KEY = 'golden_mcap_cache_v1';
+const MCAP_CACHE_TTL_MS = 60 * 60 * 1000;  // 1 hour
+
+function readMcapCache() {
+  try { return JSON.parse(localStorage.getItem(MCAP_CACHE_KEY) || '{}') || {}; }
+  catch (e) { return {}; }
+}
+function writeMcapCache(cache) {
+  try { localStorage.setItem(MCAP_CACHE_KEY, JSON.stringify(cache)); } catch (e) {}
+}
+function cachedMcap(ca) {
+  const entry = readMcapCache()[ca.toLowerCase()];
+  if (!entry || typeof entry.value !== 'number') return null;
+  if (Date.now() - entry.ts > MCAP_CACHE_TTL_MS) return null;
+  return entry.value;
+}
+function setCachedMcap(ca, value) {
+  const cache = readMcapCache();
+  cache[ca.toLowerCase()] = { value, ts: Date.now() };
+  writeMcapCache(cache);
+}
+
 async function fetchTokenMcap(ca) {
   try {
     const r = await fetch('https://api.dexscreener.com/latest/dex/tokens/' + ca, { cache: 'no-store' });
@@ -1296,22 +1321,36 @@ async function fetchTokenMcap(ca) {
   }
 }
 
+function paintFortune(i, value) {
+  const cell = document.querySelector(`[data-fortune-cell="${i}"]`);
+  if (!cell) return;
+  if (value != null) {
+    travellers[i].fortune = value;
+    cell.classList.remove('loading');
+    cell.textContent = formatMcap(value);
+  } else {
+    cell.textContent = '—';
+  }
+}
+
 async function hydrateLiveFortunes() {
   for (let i = 0; i < travellers.length; i++) {
     const t = travellers[i];
     if (!t.fortuneLive) continue;
     const ca = (t.coinLink || '').split('/').pop();
     if (!ca || !ca.startsWith('0x')) continue;
-    const mc = await fetchTokenMcap(ca);
-    const cell = document.querySelector(`[data-fortune-cell="${i}"]`);
-    if (!cell) continue;
-    if (mc != null) {
-      t.fortune = mc;
-      cell.classList.remove('loading');
-      cell.textContent = formatMcap(mc);
-    } else {
-      cell.textContent = '—';
+
+    // 1) Cache hit (≤ 1h old) — paint immediately, skip the network call.
+    const cached = cachedMcap(ca);
+    if (cached != null) {
+      paintFortune(i, cached);
+      continue;
     }
+
+    // 2) Cache miss / stale — fetch, store, paint.
+    const mc = await fetchTokenMcap(ca);
+    if (mc != null) setCachedMcap(ca, mc);
+    paintFortune(i, mc);
   }
 }
 
