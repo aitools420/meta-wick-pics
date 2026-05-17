@@ -213,18 +213,33 @@ body::before {
   box-shadow: inset 0 1px 2px rgba(60,30,10,0.15);
 }
 
-/* Top row: avatar + name + date */
-.entry-head {
+/* Single-row layout — avatar | name+date | coin | fortune | seal */
+.entry-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding-bottom: 12px;
-  border-bottom: 1.5px dashed rgba(120,70,20,0.4);
-  margin-bottom: 14px;
+  gap: 10px;
+}
+.entry-row > * { flex-shrink: 0; }
+.entry-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.entry-text .entry-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.entry-text .entry-date {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .avatar {
   flex-shrink: 0;
-  width: 58px; height: 58px;
+  width: 44px; height: 44px;
   border-radius: 50%;
   background:
     radial-gradient(circle at 30% 30%, #6b4226 0%, #3d2410 70%, #2a1810 100%);
@@ -240,24 +255,25 @@ body::before {
   font-size: 30px;
   line-height: 1;
 }
-.entry-head-text { flex: 1; min-width: 0; }
-.entry-head .label { margin-top: 2px; }
-.entry-head .label:first-child { margin-top: 0; }
 .entry-name {
   font-family: 'Cinzel Decorative', serif;
   font-weight: 700;
-  font-size: clamp(16px, 4.6vw, 20px);
+  font-size: clamp(14px, 4.2vw, 18px);
   color: var(--ink);
   letter-spacing: 0.01em;
-  line-height: 1.15;
+  line-height: 1.1;
   text-shadow: 0 1px 0 rgba(255,250,200,0.5);
+  text-decoration: none;
 }
+a.entry-name { display: inline-block; cursor: pointer; transition: color 0.15s, text-shadow 0.15s; }
+a.entry-name:hover { color: #8a5a08; text-shadow: 0 0 6px rgba(255,180,40,0.5), 0 1px 0 rgba(255,250,200,0.5); }
 .entry-date {
   font-family: 'IM Fell English', serif;
   font-style: italic;
-  font-size: clamp(12px, 3.6vw, 14px);
+  font-size: clamp(10px, 3.2vw, 12px);
   color: var(--ink-dim);
   letter-spacing: 0.02em;
+  line-height: 1.1;
 }
 
 /* Labels — small SCRIBED tags */
@@ -270,59 +286,45 @@ body::before {
   margin-bottom: 2px;
 }
 
-/* Middle row: coin + fortune + epoch seal */
-.entry-grid {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 14px;
-}
-.coin-block, .fortune-block, .epoch-block {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-}
-.fortune-block { align-items: flex-start; padding-left: 6px; }
-.fortune-block .label { align-self: flex-start; }
-.epoch-block .label { font-size: 10px; }
-
 /* The Coin — glowing embossed gold disc */
 .coin {
-  width: 84px; height: 84px;
+  width: 56px; height: 56px;
   border-radius: 50%;
   background:
     radial-gradient(circle at 32% 28%, #fff8d0 0%, #ffe17a 22%, #f0b937 55%, #b07710 88%, #6b3a08 100%);
   box-shadow:
-    inset 0 -4px 8px rgba(80,40,0,0.55),
-    inset 0 4px 8px rgba(255,250,200,0.55),
-    inset 0 0 0 3px #b07710,
-    inset 0 0 0 4px #6b3a08,
+    inset 0 -3px 6px rgba(80,40,0,0.55),
+    inset 0 3px 6px rgba(255,250,200,0.55),
+    inset 0 0 0 2px #b07710,
+    inset 0 0 0 3px #6b3a08,
     0 0 0 1.5px var(--gold-dark),
-    0 0 14px rgba(255,180,40,0.55),
-    0 6px 12px rgba(0,0,0,0.5);
+    0 0 12px rgba(255,180,40,0.55),
+    0 5px 10px rgba(0,0,0,0.5);
   display: flex; align-items: center; justify-content: center;
   font-family: 'Cinzel Decorative', serif;
   font-weight: 900;
-  font-size: 17px;
-  letter-spacing: 0.04em;
+  font-size: 13px;
+  letter-spacing: 0.02em;
   color: #4a2c08;
   text-shadow:
     0 1px 0 #fff5c2,
     0 -1px 0 #6b3a08;
   position: relative;
   animation: coinShimmer 4s ease-in-out infinite;
+  text-decoration: none;
 }
+a.coin { cursor: pointer; transition: transform 0.15s, filter 0.15s; }
+a.coin:hover { transform: scale(1.06) rotate(-3deg); filter: brightness(1.1); }
+a.coin:active { transform: scale(0.97); }
 .coin::before {
-  /* tiny stars on the rim */
   content: '★';
-  position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
-  font-size: 8px; color: rgba(74,44,8,0.5);
+  position: absolute; top: 3px; left: 50%; transform: translateX(-50%);
+  font-size: 6px; color: rgba(74,44,8,0.5);
 }
 .coin::after {
   content: '★';
-  position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%);
-  font-size: 8px; color: rgba(74,44,8,0.5);
+  position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+  font-size: 6px; color: rgba(74,44,8,0.5);
 }
 @keyframes coinShimmer {
   0%,100% { filter: drop-shadow(0 0 0 transparent); }
@@ -333,7 +335,7 @@ body::before {
 .fortune {
   font-family: 'Cinzel Decorative', serif;
   font-weight: 900;
-  font-size: clamp(22px, 6vw, 28px);
+  font-size: clamp(14px, 4vw, 18px);
   letter-spacing: 0.02em;
   background: linear-gradient(180deg, #c89020 0%, #8a5a08 100%);
   -webkit-background-clip: text;
@@ -343,11 +345,20 @@ body::before {
   filter: drop-shadow(0 1px 1px rgba(60,30,10,0.35));
   font-variant-numeric: tabular-nums;
   line-height: 1.1;
+  white-space: nowrap;
+}
+.fortune.loading {
+  -webkit-text-fill-color: var(--ink-dim);
+  background: none;
+  filter: none;
+  font-style: italic;
+  font-size: clamp(12px, 3.4vw, 14px);
+  opacity: 0.7;
 }
 
 /* Wax seal · Roman numeral Epoch button */
 .seal {
-  width: 64px; height: 64px;
+  width: 46px; height: 46px;
   border: 0;
   border-radius: 50%;
   background:
@@ -361,8 +372,8 @@ body::before {
     0 6px 12px rgba(0,0,0,0.55);
   font-family: 'Cinzel', serif;
   font-weight: 900;
-  font-size: 16px;
-  letter-spacing: 0.08em;
+  font-size: 13px;
+  letter-spacing: 0.06em;
   color: #ffe9a0;
   text-shadow:
     0 1px 0 #5a0a0a,
@@ -629,23 +640,22 @@ footer a:hover { color: var(--gold-light); }
 @media (max-width: 380px) {
   body { padding: 16px 8px 36px; }
   .banner { padding: 18px 22px 20px; }
-  .parchment-inner { padding: 18px 10px 22px; }
-  .entry-body { padding: 12px 10px 14px; }
-  .entry-head { gap: 11px; }
-  .avatar { width: 50px; height: 50px; font-size: 26px; }
-  .coin { width: 72px; height: 72px; font-size: 15px; }
-  .seal { width: 56px; height: 56px; font-size: 15px; }
-  .entry-grid { gap: 10px; }
+  .parchment-inner { padding: 18px 8px 22px; }
+  .entry-body { padding: 10px 8px 12px; }
+  .entry-row { gap: 7px; }
+  .avatar { width: 38px; height: 38px; font-size: 22px; }
+  .coin { width: 48px; height: 48px; font-size: 11px; }
+  .seal { width: 42px; height: 42px; font-size: 12px; }
 }
 
 /* Larger screens — desktop view */
 @media (min-width: 760px) {
   body { padding: 36px 16px 60px; }
-  .entry-body { padding: 18px 22px 20px; }
-  .entry-head { gap: 18px; }
-  .avatar { width: 64px; height: 64px; font-size: 32px; }
-  .coin { width: 96px; height: 96px; font-size: 19px; }
-  .seal { width: 72px; height: 72px; font-size: 18px; }
+  .entry-body { padding: 16px 22px 18px; }
+  .entry-row { gap: 18px; }
+  .avatar { width: 56px; height: 56px; font-size: 30px; }
+  .coin { width: 72px; height: 72px; font-size: 16px; }
+  .seal { width: 60px; height: 60px; font-size: 16px; }
   .hoard-inner { padding: 18px 22px; }
 }
 </style>
@@ -695,134 +705,23 @@ footer a:hover { color: var(--gold-light); }
 
 <script>
 /* ============================================================
-   DATA · sample travellers (replace with real entries)
-   Each traveller's `epoch` is the count of coins they have held
-   (current + history.length). Epoch > 1 makes the seal clickable.
+   DATA · travellers (test case = single entry)
+   Each traveller's `epoch` = 1 + history.length. Epoch > 1 makes
+   the wax-seal button clickable to open the past-hoards screen.
    ============================================================ */
+const WICK_CA = "0x8CDaf3d630Da9E1450832924D5701CC0500E9cfC";
+
 const travellers = [
   {
-    name: "Ser Aldric Goldhand",
+    name: "Ser Tangent",
+    nameLink: "https://x.com/OG_TAngent",
     avatar: "🦁",
-    inscribed: "Day XII, Moon of Ash, AC 1247",
+    inscribed: "Day XVIII, May 2026",
     coin: "WICK",
-    fortune: 2_420_000,
-    history: [
-      { name: "FROG",  forged:    80_000, faded:   420_000 },
-      { name: "GNOM",  forged:    50_000, faded:    12_000 },
-      { name: "BARD",  forged:   200_000, faded: 1_800_000 },
-      { name: "ORCS",  forged:   350_000, faded:   180_000 },
-      { name: "DRGN",  forged:   600_000, faded: 4_200_000 },
-      { name: "ANVL",  forged: 1_100_000, faded:   880_000 }
-    ]
-  },
-  {
-    name: "Lady Mireille Emberhall",
-    avatar: "🔥",
-    inscribed: "Eve of Iron Tide, AC 1247",
-    coin: "HEX",
-    fortune: 69_410_000,
-    history: [
-      { name: "EMBR",  forged:   320_000, faded: 1_240_000 },
-      { name: "SCRL",  forged:   880_000, faded:   210_000 }
-    ]
-  },
-  {
-    name: "The Whispering Skald",
-    avatar: "🪶",
-    inscribed: "Day XX, Crimson Moon",
-    coin: "FROG",
-    fortune: 1_180_000,
-    history: [
-      { name: "LUTE",  forged:   140_000, faded:   320_000 },
-      { name: "VRSE",  forged:    60_000, faded:    18_000 },
-      { name: "MYTH",  forged:   420_000, faded: 2_100_000 },
-      { name: "RUNE",  forged:   200_000, faded:    52_000 }
-    ]
-  },
-  {
-    name: "Sage Therion the Wise",
-    avatar: "🌙",
-    inscribed: "Twilight of Embers, 4th of Hollow",
-    coin: "MYST",
-    fortune: 4_710_000,
-    history: [
-      { name: "GRIM",  forged:    90_000, faded: 1_100_000 },
-      { name: "TOME",  forged:   220_000, faded:   140_000 },
-      { name: "SAGE",  forged:   480_000, faded: 6_400_000 },
-      { name: "QUIL",  forged:   310_000, faded:    72_000 },
-      { name: "MOON",  forged:   140_000, faded:   970_000 },
-      { name: "ECHO",  forged:   620_000, faded:   430_000 },
-      { name: "DUSK",  forged:   930_000, faded: 3_120_000 },
-      { name: "GLPH",  forged:   180_000, faded:    44_000 }
-    ]
-  },
-  {
-    name: "Brunhilde Stormfist",
-    avatar: "⚔️",
-    inscribed: "High Sun, 5th of Forge",
-    coin: "ORCS",
-    fortune: 324_000,
-    history: [
-      { name: "HAMR",  forged:    72_000, faded:   188_000 }
-    ]
-  },
-  {
-    name: "Captain Wolfwood",
-    avatar: "🐺",
-    inscribed: "First Light, 3rd of Hollow",
-    coin: "BARD",
-    fortune: 850_000,
-    history: []
-  },
-  {
-    name: "Cassian Nightmist",
-    avatar: "🗡️",
-    inscribed: "Day VIII, Velvet Moon",
-    coin: "SHRD",
-    fortune: 14_520_000,
-    history: [
-      { name: "FANG",  forged:   180_000, faded: 1_100_000 },
-      { name: "VEIL",  forged:   620_000, faded:   240_000 },
-      { name: "WISP",  forged:   440_000, faded: 3_280_000 }
-    ]
-  },
-  {
-    name: "The Iron Bard",
-    avatar: "⚒️",
-    inscribed: "Last Bell, 11th of Hollow",
-    coin: "ANVL",
-    fortune: 880_000,
-    history: [
-      { name: "FORG",  forged:    60_000, faded:   720_000 },
-      { name: "SPRK",  forged:   210_000, faded:   860_000 },
-      { name: "PYRE",  forged:   480_000, faded:    98_000 },
-      { name: "SOOT",  forged:    90_000, faded:    36_000 },
-      { name: "CINR",  forged:   320_000, faded: 1_640_000 }
-    ]
-  },
-  {
-    name: "Lyra Faewhisper",
-    avatar: "⭐",
-    inscribed: "Dawn, 1st of Verdant",
-    coin: "DRYAD",
-    fortune: 2_130_000,
-    history: []
-  },
-  {
-    name: "The Crimson Bandit",
-    avatar: "🛡️",
-    inscribed: "Midnight, 28th of Frost",
-    coin: "STAB",
-    fortune: 640_000,
-    history: [
-      { name: "DAGR",  forged:   140_000, faded:   480_000 },
-      { name: "MASK",  forged:   220_000, faded:    66_000 },
-      { name: "PURS",  forged:   80_000,  faded:   910_000 },
-      { name: "SHIV",  forged:   310_000, faded:   140_000 },
-      { name: "CLOK",  forged:   480_000, faded: 1_220_000 },
-      { name: "OATH",  forged:   180_000, faded:    48_000 },
-      { name: "TOLL",  forged:   720_000, faded: 2_440_000 }
-    ]
+    coinLink: "https://dexscreener.com/pulsechain/" + WICK_CA,
+    fortune: null,        // filled live from DexScreener
+    fortuneLive: true,
+    history: []           // Epoch I — no past hoards
   }
 ];
 
@@ -856,7 +755,7 @@ function escapeHtml(s) {
 function epochOf(t) { return 1 + (t.history ? t.history.length : 0); }
 
 /* ============================================================
-   RENDER · main list
+   RENDER · main list (single-row layout per entry)
    ============================================================ */
 function renderList() {
   const list = document.getElementById('list');
@@ -864,42 +763,78 @@ function renderList() {
     const epoch = epochOf(t);
     const canOpen = epoch > 1;
     const roman = toRoman(epoch);
+    const nameHtml = t.nameLink
+      ? `<a class="entry-name" href="${escapeHtml(t.nameLink)}" target="_blank" rel="noopener">${escapeHtml(t.name)}</a>`
+      : `<span class="entry-name">${escapeHtml(t.name)}</span>`;
+    const coinHtml = t.coinLink
+      ? `<a class="coin" href="${escapeHtml(t.coinLink)}" target="_blank" rel="noopener" aria-label="${escapeHtml(t.coin)} on DexScreener">${escapeHtml(t.coin)}</a>`
+      : `<div class="coin">${escapeHtml(t.coin)}</div>`;
+    const fortuneHtml = (t.fortune == null)
+      ? `<div class="fortune loading" data-fortune-cell="${i}">…</div>`
+      : `<div class="fortune" data-fortune-cell="${i}">${formatMcap(t.fortune)}</div>`;
     return `
       <article class="entry">
         <div class="entry-body">
-          <div class="entry-head">
+          <div class="entry-row">
             <div class="avatar" aria-hidden="true">${escapeHtml(t.avatar)}</div>
-            <div class="entry-head-text">
-              <div class="label">Traveller</div>
-              <div class="entry-name">${escapeHtml(t.name)}</div>
-              <div class="label">Inscribed</div>
-              <div class="entry-date">${escapeHtml(t.inscribed)}</div>
+            <div class="entry-text">
+              ${nameHtml}
+              <span class="entry-date">${escapeHtml(t.inscribed)}</span>
             </div>
-          </div>
-          <div class="entry-grid">
-            <div class="coin-block">
-              <div class="label">Coin</div>
-              <div class="coin">${escapeHtml(t.coin)}</div>
-            </div>
-            <div class="fortune-block">
-              <div class="label">Fortune</div>
-              <div class="fortune">${formatMcap(t.fortune)}</div>
-            </div>
-            <div class="epoch-block">
-              <div class="label">Epoch</div>
-              <button class="seal ${canOpen ? 'clickable' : 'spent'}"
-                      type="button"
-                      ${canOpen
-                        ? `onclick="openDetail(${i})" aria-label="View past hoards of ${escapeHtml(t.name)}"`
-                        : 'disabled aria-label="No past hoards"'}>
-                ${roman}
-              </button>
-            </div>
+            ${coinHtml}
+            ${fortuneHtml}
+            <button class="seal ${canOpen ? 'clickable' : 'spent'}"
+                    type="button"
+                    ${canOpen
+                      ? `onclick="openDetail(${i})" aria-label="View past hoards of ${escapeHtml(t.name)}"`
+                      : 'disabled aria-label="No past hoards yet"'}>
+              ${roman}
+            </button>
           </div>
         </div>
       </article>
     `;
   }).join('');
+}
+
+/* ============================================================
+   LIVE FORTUNE · DexScreener marketCap lookup for tokens with
+   `fortuneLive: true`. Picks the PulseChain pair with the most
+   liquidity, prefers marketCap (circulating) over fdv.
+   ============================================================ */
+async function fetchTokenMcap(ca) {
+  try {
+    const r = await fetch('https://api.dexscreener.com/latest/dex/tokens/' + ca, { cache: 'no-store' });
+    if (!r.ok) return null;
+    const d = await r.json();
+    const pairs = (d.pairs || []).filter(p => p && (p.chainId === 'pulsechain' || p.chainId === 'pulse'));
+    if (!pairs.length) return null;
+    pairs.sort((a, b) => (b.liquidity?.usd || 0) - (a.liquidity?.usd || 0));
+    const top = pairs[0];
+    const mc = Number(top.marketCap || top.fdv || 0);
+    return mc > 0 ? mc : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function hydrateLiveFortunes() {
+  for (let i = 0; i < travellers.length; i++) {
+    const t = travellers[i];
+    if (!t.fortuneLive) continue;
+    const ca = (t.coinLink || '').split('/').pop();
+    if (!ca || !ca.startsWith('0x')) continue;
+    const mc = await fetchTokenMcap(ca);
+    const cell = document.querySelector(`[data-fortune-cell="${i}"]`);
+    if (!cell) continue;
+    if (mc != null) {
+      t.fortune = mc;
+      cell.classList.remove('loading');
+      cell.textContent = formatMcap(mc);
+    } else {
+      cell.textContent = '—';
+    }
+  }
 }
 
 /* ============================================================
@@ -977,6 +912,7 @@ window.addEventListener('popstate', () => {
    BOOT
    ============================================================ */
 renderList();
+hydrateLiveFortunes();
 // Deep-link support: #t3 → opens traveller index 3
 const m = location.hash.match(/^#t(\d+)$/);
 if (m) {
@@ -987,6 +923,7 @@ if (m) {
 // Expose for live edits in console
 window.travellers = travellers;
 window.renderList = renderList;
+window.hydrateLiveFortunes = hydrateLiveFortunes;
 </script>
 
 </body>
